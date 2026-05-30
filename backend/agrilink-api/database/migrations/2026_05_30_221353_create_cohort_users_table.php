@@ -6,20 +6,31 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('cohort_users', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('cohort_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->foreignId('user_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->enum('role_in_cohort', [
+                'participant',
+                'trainer',
+                'assistant'
+            ])->default('participant');
+
             $table->timestamps();
+
+            $table->unique(['cohort_id', 'user_id']);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('cohort_users');
