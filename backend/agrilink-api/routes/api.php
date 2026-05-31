@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\LessonController;
 use App\Http\Controllers\Api\CohortController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\ProductImageController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -78,8 +79,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/products', [ProductController::class, 'store']);
     Route::put('/products/{product}', [ProductController::class, 'update']);
     Route::delete('/products/{product}', [ProductController::class, 'destroy']);
+    Route::post('/products/{product}/images', [ProductImageController::class, 'store']);
+    Route::delete('/product-images/{image}', [ProductImageController::class, 'destroy']);
 });
 
 Route::middleware(['auth:sanctum', 'role:super_admin|admin'])->group(function () {
     Route::patch('/products/{product}/status', [ProductController::class, 'updateStatus']);
 });
+
