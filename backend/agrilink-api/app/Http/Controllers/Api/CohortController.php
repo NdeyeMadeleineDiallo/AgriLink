@@ -106,4 +106,25 @@ public function removeUser(Cohort $cohort, $userId)
         'message' => 'Utilisateur retiré de la cohorte avec succès.',
     ]);
 }
+
+public function stats(Cohort $cohort)
+{
+    $users = $cohort->users()->get();
+
+    return response()->json([
+        'cohort' => [
+            'id' => $cohort->id,
+            'name' => $cohort->name,
+            'status' => $cohort->status,
+            'start_date' => $cohort->start_date,
+            'end_date' => $cohort->end_date,
+        ],
+        'statistics' => [
+            'total_users' => $users->count(),
+            'participants' => $users->where('pivot.role_in_cohort', 'participant')->count(),
+            'trainers' => $users->where('pivot.role_in_cohort', 'trainer')->count(),
+            'assistants' => $users->where('pivot.role_in_cohort', 'assistant')->count(),
+        ],
+    ]);
+}
 }
