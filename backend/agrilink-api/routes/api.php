@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\LessonController;
+use App\Http\Controllers\Api\CohortController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -39,4 +40,18 @@ Route::middleware(['auth:sanctum', 'role:super_admin|admin'])->group(function ()
     Route::post('/courses/{course}/lessons', [LessonController::class, 'store']);
     Route::put('/lessons/{lesson}', [LessonController::class, 'update']);
     Route::delete('/lessons/{lesson}', [LessonController::class, 'destroy']);
+});
+
+Route::get('/cohorts', [CohortController::class, 'index']);
+Route::get('/cohorts/{cohort}', [CohortController::class, 'show']);
+
+Route::middleware(['auth:sanctum','role:super_admin|admin'])
+->group(function () {
+
+    Route::post('/cohorts', [CohortController::class, 'store']);
+
+    Route::put('/cohorts/{cohort}', [CohortController::class, 'update']);
+
+    Route::delete('/cohorts/{cohort}', [CohortController::class, 'destroy']);
+    Route::post('/cohorts/{cohort}/enroll', [CohortController::class, 'enroll']);
 });
