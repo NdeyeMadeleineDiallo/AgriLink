@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\LessonController;
 use App\Http\Controllers\Api\CohortController;
+use App\Http\Controllers\Api\CategoryController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -59,3 +60,12 @@ Route::middleware(['auth:sanctum','role:super_admin|admin'])
 Route::get('/cohorts/{cohort}/users', [CohortController::class, 'users']);
 Route::delete('/cohorts/{cohort}/users/{user}', [CohortController::class, 'removeUser']);
 Route::get('/cohorts/{cohort}/stats', [CohortController::class, 'stats']);
+
+Route::get('/categories', [CategoryController::class, 'index']);
+Route::get('/categories/{category}', [CategoryController::class, 'show']);
+
+Route::middleware(['auth:sanctum', 'role:super_admin|admin'])->group(function () {
+    Route::post('/categories', [CategoryController::class, 'store']);
+    Route::put('/categories/{category}', [CategoryController::class, 'update']);
+    Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
+});
