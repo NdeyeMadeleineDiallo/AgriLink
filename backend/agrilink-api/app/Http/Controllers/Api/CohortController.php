@@ -89,4 +89,21 @@ class CohortController extends Controller
         'cohort' => $cohort->load('users'),
     ]);
 }
+
+public function users(Cohort $cohort)
+{
+    return response()->json([
+        'cohort' => $cohort->name,
+        'users' => $cohort->users()->get(),
+    ]);
+}
+
+public function removeUser(Cohort $cohort, $userId)
+{
+    $cohort->users()->detach($userId);
+
+    return response()->json([
+        'message' => 'Utilisateur retiré de la cohorte avec succès.',
+    ]);
+}
 }

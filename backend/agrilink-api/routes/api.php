@@ -55,3 +55,6 @@ Route::middleware(['auth:sanctum','role:super_admin|admin'])
     Route::delete('/cohorts/{cohort}', [CohortController::class, 'destroy']);
     Route::post('/cohorts/{cohort}/enroll', [CohortController::class, 'enroll']);
 });
+
+Route::get('/cohorts/{cohort}/users', [CohortController::class, 'users']);
+Route::delete('/cohorts/{cohort}/users/{user}', [CohortController::class, 'removeUser']);
