@@ -24,7 +24,7 @@ return new class extends Migration
 
             $table->string('pdf_file')->nullable();
 
-            $table->integer('order')->default(1);
+            $table->integer('position')->default(1);
 
             $table->integer('duration')->nullable();
 
