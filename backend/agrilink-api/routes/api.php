@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\CohortController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ProductImageController;
+use App\Http\Controllers\Api\ExpertProfileController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -85,5 +86,18 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 Route::middleware(['auth:sanctum', 'role:super_admin|admin'])->group(function () {
     Route::patch('/products/{product}/status', [ProductController::class, 'updateStatus']);
+});
+
+Route::get('/experts', [ExpertProfileController::class, 'index']);
+Route::get('/experts/{expertProfile}', [ExpertProfileController::class, 'show']);
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/experts', [ExpertProfileController::class, 'store']);
+    Route::put('/experts/{expertProfile}', [ExpertProfileController::class, 'update']);
+    Route::delete('/experts/{expertProfile}', [ExpertProfileController::class, 'destroy']);
+});
+
+Route::middleware(['auth:sanctum', 'role:super_admin|admin'])->group(function () {
+    Route::patch('/experts/{expertProfile}/status', [ExpertProfileController::class, 'updateStatus']);
 });
 
