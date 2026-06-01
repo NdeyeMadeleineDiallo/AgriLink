@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\ProductImageController;
 use App\Http\Controllers\Api\ExpertProfileController;
 use App\Http\Controllers\Api\ServiceRequestController;
 use App\Http\Controllers\Api\LessonProgressController;
+use App\Http\Controllers\Api\CertificateController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -110,6 +111,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/lessons/{lesson}/complete', [LessonProgressController::class, 'complete']);
     Route::get('/my-progress', [LessonProgressController::class, 'myProgress']);
     Route::get('/courses/{course}/progress', [LessonProgressController::class, 'courseProgress']);
+    Route::post('/courses/{course}/certificate', [CertificateController::class, 'generate']);
+    Route::get('/my-certificates', [CertificateController::class, 'myCertificates']);
 });
 
 Route::middleware(['auth:sanctum', 'role:super_admin|admin|expert'])->group(function () {
