@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ProductImageController;
 use App\Http\Controllers\Api\ExpertProfileController;
 use App\Http\Controllers\Api\ServiceRequestController;
+use App\Http\Controllers\Api\LessonProgressController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -106,6 +107,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/experts/{expertProfile}/service-requests', [ServiceRequestController::class, 'store']);
     Route::get('/my-service-requests', [ServiceRequestController::class, 'myRequests']);
     Route::get('/expert-service-requests', [ServiceRequestController::class, 'expertRequests']);
+    Route::post('/lessons/{lesson}/complete', [LessonProgressController::class, 'complete']);
+    Route::get('/my-progress', [LessonProgressController::class, 'myProgress']);
 });
 
 Route::middleware(['auth:sanctum', 'role:super_admin|admin|expert'])->group(function () {

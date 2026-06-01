@@ -28,4 +28,9 @@ class Lesson extends Model
     {
         return $this->belongsTo(Course::class);
     }
+
+    public function progress()
+{
+    return $this->hasMany(LessonProgress::class);
+}
 }

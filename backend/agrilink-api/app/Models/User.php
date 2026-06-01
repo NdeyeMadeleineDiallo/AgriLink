@@ -91,4 +91,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(ServiceRequest::class);
     }
+
+    public function lessonProgress()
+{
+    return $this->hasMany(LessonProgress::class);
+}
 }
