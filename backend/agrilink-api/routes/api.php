@@ -13,6 +13,8 @@ use App\Http\Controllers\Api\ExpertProfileController;
 use App\Http\Controllers\Api\ServiceRequestController;
 use App\Http\Controllers\Api\LessonProgressController;
 use App\Http\Controllers\Api\CertificateController;
+use App\Http\Controllers\Api\SubscriptionController;
+use App\Http\Controllers\Api\PaymentController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -52,20 +54,22 @@ Route::middleware(['auth:sanctum', 'role:super_admin|admin'])->group(function ()
 Route::get('/cohorts', [CohortController::class, 'index']);
 Route::get('/cohorts/{cohort}', [CohortController::class, 'show']);
 
-Route::middleware(['auth:sanctum','role:super_admin|admin'])
-->group(function () {
+Route::middleware(['auth:sanctum','role:super_admin|admin'])->group(function () {
 
     Route::post('/cohorts', [CohortController::class, 'store']);
 
     Route::put('/cohorts/{cohort}', [CohortController::class, 'update']);
 
     Route::delete('/cohorts/{cohort}', [CohortController::class, 'destroy']);
-    Route::post('/cohorts/{cohort}/enroll', [CohortController::class, 'enroll']);
-});
 
-Route::get('/cohorts/{cohort}/users', [CohortController::class, 'users']);
-Route::delete('/cohorts/{cohort}/users/{user}', [CohortController::class, 'removeUser']);
-Route::get('/cohorts/{cohort}/stats', [CohortController::class, 'stats']);
+    Route::post('/cohorts/{cohort}/enroll', [CohortController::class, 'enroll']);
+
+    Route::get('/cohorts/{cohort}/users', [CohortController::class, 'users']);
+
+    Route::delete('/cohorts/{cohort}/users/{user}', [CohortController::class, 'removeUser']);
+
+    Route::get('/cohorts/{cohort}/stats', [CohortController::class, 'stats']);
+});
 
 Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/categories/{category}', [CategoryController::class, 'show']);
@@ -117,4 +121,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 Route::middleware(['auth:sanctum', 'role:super_admin|admin|expert'])->group(function () {
     Route::patch('/service-requests/{serviceRequest}/status', [ServiceRequestController::class, 'updateStatus']);
+});
+
+    Route::get('/subscriptions', [SubscriptionController::class, 'index']);
+
+Route::middleware(['auth:sanctum', 'role:super_admin|admin'])->group(function () {
+    Route::post('/subscriptions', [SubscriptionController::class, 'store']);
+    Route::get('/payments', [PaymentController::class, 'payments']);
+});
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('/payments/manual', [PaymentController::class, 'manualPayment']);
+    Route::get('/my-subscription', [PaymentController::class, 'mySubscription']);
 });
