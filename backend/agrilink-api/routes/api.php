@@ -109,6 +109,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/expert-service-requests', [ServiceRequestController::class, 'expertRequests']);
     Route::post('/lessons/{lesson}/complete', [LessonProgressController::class, 'complete']);
     Route::get('/my-progress', [LessonProgressController::class, 'myProgress']);
+    Route::get('/courses/{course}/progress', [LessonProgressController::class, 'courseProgress']);
 });
 
 Route::middleware(['auth:sanctum', 'role:super_admin|admin|expert'])->group(function () {
