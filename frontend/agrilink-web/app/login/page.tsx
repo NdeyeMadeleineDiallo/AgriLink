@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { apiRequest } from "@/src/services/api";
+import { redirectByRole } from "@/src/lib/auth";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("admin@agrilink.sn");
@@ -23,8 +24,8 @@ export default function LoginPage() {
 
       localStorage.setItem("agrilink_token", data.token);
       localStorage.setItem("agrilink_user", JSON.stringify(data.user));
+      redirectByRole(data.user);
 
-      window.location.href = "/dashboard";
     } catch (err: any) {
       setError(err.message || "Erreur de connexion.");
     } finally {

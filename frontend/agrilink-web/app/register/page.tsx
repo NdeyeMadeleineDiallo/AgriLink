@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { apiRequest } from "@/src/services/api";
+import { redirectByRole } from "@/src/lib/auth";
 
 export default function RegisterPage() {
   const [form, setForm] = useState({
@@ -35,7 +36,7 @@ export default function RegisterPage() {
       localStorage.setItem("agrilink_token", data.token);
       localStorage.setItem("agrilink_user", JSON.stringify(data.user));
 
-      window.location.href = "/dashboard";
+      redirectByRole(data.user);
     } catch (err: any) {
       setError(err.message || "Erreur d’inscription.");
     } finally {
