@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Award, BookOpen, CreditCard, LogOut, TrendingUp } from "lucide-react";
+import Link from "next/link";
 import { getStoredUser, logout } from "@/src/lib/auth";
 import { apiRequest } from "@/src/services/api";
 
@@ -73,14 +74,25 @@ export default function StudentPage() {
 
       <section className="container-page py-8">
         <div className="rounded-[28px] bg-gradient-to-br from-green-700 via-green-500 to-orange-500 p-8 text-white">
-          <p className="text-sm text-white/80">Votre parcours AgriAcademy</p>
-          <h2 className="mt-3 text-4xl font-black">
-            Continuez votre progression agricole.
-          </h2>
-          <p className="mt-4 max-w-2xl text-white/85">
-            Retrouvez vos cours, certificats et informations d’abonnement dans un seul espace.
-          </p>
-        </div>
+  <p className="text-sm text-white/80">Votre parcours AgriAcademy</p>
+
+  <h2 className="mt-3 text-4xl font-black">
+    Continuez votre progression agricole.
+  </h2>
+
+  <p className="mt-4 max-w-2xl text-white/85">
+    Retrouvez vos cours, certificats et informations d’abonnement dans un seul espace.
+  </p>
+
+  <div className="mt-6">
+    <Link
+      href="/student/courses"
+      className="inline-flex items-center rounded-2xl bg-white px-6 py-3 font-bold text-green-700 shadow-md hover:bg-green-50"
+    >
+      Voir mes cours
+    </Link>
+  </div>
+</div>
 
         {loading ? (
           <div className="mt-8 card p-8 text-slate-500">
