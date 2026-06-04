@@ -1,7 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ArrowLeft, BookOpen, CheckCircle2, PlayCircle } from "lucide-react";
+import {
+  ArrowLeft,
+  Award,
+  BookOpen,
+  CheckCircle2,
+  PlayCircle,
+} from "lucide-react";
 import Link from "next/link";
 import { getStoredUser } from "@/src/lib/auth";
 import { apiRequest } from "@/src/services/api";
@@ -13,6 +19,7 @@ export default function StudentCoursesPage() {
   const [lessons, setLessons] = useState<any[]>([]);
   const [courseProgress, setCourseProgress] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [certificateMessage, setCertificateMessage] = useState("");
 
   useEffect(() => {
     const storedUser = getStoredUser();
@@ -39,6 +46,7 @@ export default function StudentCoursesPage() {
 
   async function openCourse(course: any) {
     setSelectedCourse(course);
+    setCertificateMessage("");
 
     try {
       const lessonsData = await apiRequest(`/courses/${course.id}/lessons`);
@@ -65,7 +73,26 @@ export default function StudentCoursesPage() {
     }
   }
 
+  async function generateCertificate() {
+    if (!selectedCourse) return;
+
+    try {
+      await apiRequest(`/courses/${selectedCourse.id}/certificate`, {
+        method: "POST",
+      });
+
+      setCertificateMessage("Certificat généré avec succès.");
+    } catch (error: any) {
+      setCertificateMessage(
+        error?.message || "Impossible de générer le certificat."
+      );
+    }
+  }
+
   if (!user) return null;
+
+  const progressPercentage =
+    courseProgress?.summary?.progress_percentage || 0;
 
   return (
     <main className="min-h-screen bg-[#F8FAFC]">
@@ -80,7 +107,10 @@ export default function StudentCoursesPage() {
             </p>
           </div>
 
-          <Link href="/student" className="btn-secondary inline-flex items-center gap-2">
+          <Link
+            href="/student"
+            className="btn-secondary inline-flex items-center gap-2"
+          >
             <ArrowLeft size={18} />
             Retour
           </Link>
@@ -98,15 +128,20 @@ export default function StudentCoursesPage() {
                   key={course.id}
                   onClick={() => openCourse(course)}
                   className={`card w-full p-5 text-left transition hover:-translate-y-1 ${
-                    selectedCourse?.id === course.id ? "ring-2 ring-green-500" : ""
+                    selectedCourse?.id === course.id
+                      ? "ring-2 ring-green-500"
+                      : ""
                   }`}
                 >
                   <div className="flex items-center gap-3">
                     <div className="rounded-2xl bg-green-100 p-3 text-green-700">
                       <BookOpen />
                     </div>
+
                     <div>
-                      <h3 className="font-black text-slate-950">{course.title}</h3>
+                      <h3 className="font-black text-slate-950">
+                        {course.title}
+                      </h3>
                       <p className="text-sm text-slate-500">
                         {course.level} · {course.price} FCFA
                       </p>
@@ -134,18 +169,54 @@ export default function StudentCoursesPage() {
                     </div>
 
                     <span className="rounded-full bg-green-100 px-4 py-2 text-sm font-bold text-green-700">
-                      {courseProgress?.summary?.progress_percentage || 0}%
+                      {progressPercentage}%
                     </span>
                   </div>
 
                   <div className="mt-6 h-3 rounded-full bg-slate-100">
                     <div
                       className="h-3 rounded-full bg-green-600"
-                      style={{
-                        width: `${courseProgress?.summary?.progress_percentage || 0}%`,
-                      }}
+                      style={{ width: `${progressPercentage}%` }}
                     />
                   </div>
+
+                  {progressPercentage === 100 && (
+                    <div className="mt-6 rounded-2xl bg-orange-50 p-5">
+                      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                        <div>
+                          <h3 className="font-black text-orange-800">
+                            Félicitations !
+                          </h3>
+                          <p className="mt-1 text-sm text-orange-700">
+                            Vous avez terminé ce cours. Vous pouvez maintenant
+                            générer votre certificat.
+                          </p>
+                        </div>
+
+                        <button
+                          onClick={generateCertificate}
+                          className="inline-flex items-center justify-center gap-2 rounded-2xl bg-orange-500 px-5 py-3 font-bold text-white hover:bg-orange-600"
+                        >
+                          <Award size={18} />
+                          Générer mon certificat
+                        </button>
+                      </div>
+
+                      {certificateMessage && (
+                        <div className="mt-4 rounded-2xl bg-white p-4 text-sm font-semibold text-slate-700">
+                          {certificateMessage}{" "}
+                          {certificateMessage.includes("succès") && (
+                            <Link
+                              href="/student/certificates"
+                              className="ml-2 font-bold text-green-700"
+                            >
+                              Voir mes certificats
+                            </Link>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )}
 
                   <div className="mt-8 space-y-4">
                     {lessons.map((lesson) => {
