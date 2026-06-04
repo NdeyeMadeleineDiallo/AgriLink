@@ -84,14 +84,21 @@ export default function StudentPage() {
     Retrouvez vos cours, certificats et informations d’abonnement dans un seul espace.
   </p>
 
-  <div className="mt-6">
-    <Link
-      href="/student/courses"
-      className="inline-flex items-center rounded-2xl bg-white px-6 py-3 font-bold text-green-700 shadow-md hover:bg-green-50"
-    >
-      Voir mes cours
-    </Link>
-  </div>
+ <div className="mt-6 flex flex-wrap gap-4">
+  <Link
+    href="/student/courses"
+    className="inline-flex items-center rounded-2xl bg-white px-6 py-3 font-bold text-green-700 shadow-md hover:bg-green-50 transition"
+  >
+    Voir mes cours
+  </Link>
+
+  <Link
+    href="/student/certificates"
+    className="inline-flex items-center rounded-2xl bg-orange-500 px-6 py-3 font-bold text-white shadow-md hover:bg-orange-600 transition"
+  >
+    Voir mes certificats
+  </Link>
+</div>
 </div>
 
         {loading ? (
@@ -190,6 +197,7 @@ export default function StudentPage() {
                   <h3 className="text-xl font-black text-slate-950">
                     Mes certificats
                   </h3>
+                 
 
                   <div className="mt-4 space-y-3">
                     {certificates.length === 0 && (
