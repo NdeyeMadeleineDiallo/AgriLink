@@ -4,13 +4,15 @@ import { useEffect, useState } from "react";
 import { ArrowLeft, Save } from "lucide-react";
 import Link from "next/link";
 import { getStoredUser } from "@/src/lib/auth";
-import { apiRequest } from "@/src/services/api";
+import { apiRequest, apiUpload } from "@/src/services/api";
 
 export default function ExpertProfilePage() {
   const [user, setUser] = useState<any>(null);
   const [expertProfile, setExpertProfile] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [photoMessage, setPhotoMessage] = useState("");
 
   const [form, setForm] = useState({
     speciality: "",
@@ -65,6 +67,25 @@ export default function ExpertProfilePage() {
 
   function updateField(name: string, value: string) {
     setForm((prev) => ({ ...prev, [name]: value }));
+  }
+
+  async function handlePhotoUpload() {
+    if (!photoFile || !expertProfile?.id) {
+      setPhotoMessage("Veuillez choisir une image.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("photo", photoFile);
+
+    try {
+      await apiUpload(`/experts/${expertProfile.id}/photo`, formData);
+      setPhotoMessage("Photo mise à jour avec succès.");
+      setPhotoFile(null);
+      loadProfile();
+    } catch (error: any) {
+      setPhotoMessage(error?.message || "Erreur lors de l’envoi de la photo.");
+    }
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -124,6 +145,43 @@ export default function ExpertProfilePage() {
                 {message}
               </div>
             )}
+
+            <div className="mb-8 rounded-3xl border border-slate-200 bg-slate-50 p-6">
+              <h3 className="text-xl font-black text-slate-950">
+                Photo de profil
+              </h3>
+
+              {expertProfile?.photo && (
+                <img
+                  src={`http://127.0.0.1:8000/storage/${expertProfile.photo}`}
+                  alt="Photo expert"
+                  className="mt-4 h-24 w-24 rounded-full object-cover"
+                />
+              )}
+
+              <div className="mt-5 flex flex-col gap-4 md:flex-row md:items-center">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setPhotoFile(e.target.files?.[0] || null)}
+                  className="rounded-2xl border border-slate-200 bg-white px-4 py-3"
+                />
+
+                <button
+                  type="button"
+                  onClick={handlePhotoUpload}
+                  className="btn-primary"
+                >
+                  Envoyer la photo
+                </button>
+              </div>
+
+              {photoMessage && (
+                <p className="mt-3 text-sm font-bold text-green-700">
+                  {photoMessage}
+                </p>
+              )}
+            </div>
 
             <div className="grid gap-5 md:grid-cols-2">
               <Input label="Spécialité" value={form.speciality} onChange={(v) => updateField("speciality", v)} />

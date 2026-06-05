@@ -24,6 +24,30 @@ export async function apiRequest(
   }
 
   return data;
-
   
+}
+
+export async function apiUpload(
+  endpoint: string,
+  formData: FormData
+) {
+  const token =
+    typeof window !== "undefined" ? localStorage.getItem("agrilink_token") : null;
+
+  const response = await fetch(`http://127.0.0.1:8000/api${endpoint}`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    body: formData,
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw data;
+  }
+
+  return data;
 }
