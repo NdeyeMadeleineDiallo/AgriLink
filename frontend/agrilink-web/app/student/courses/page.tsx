@@ -154,7 +154,7 @@ export default function StudentCoursesPage() {
             <div className="lg:col-span-2">
               {!selectedCourse ? (
                 <div className="card p-8 text-slate-500">
-                  Sélectionnez un cours pour voir les leçons.
+                h  Sélectionnez un cours pour voir les leçons.
                 </div>
               ) : (
                 <div className="card p-6">
@@ -245,8 +245,26 @@ export default function StudentCoursesPage() {
                                   {lesson.duration || 0} min
                                 </p>
                                 <p className="mt-3 text-sm leading-6 text-slate-600">
-                                  {lesson.content}
-                                </p>
+  {lesson.content}
+</p>
+
+{lesson.video_file && (
+  <video
+    controls
+    className="mt-4 w-full rounded-2xl border border-slate-200"
+    src={`http://127.0.0.1:8000/storage/${lesson.video_file}`}
+  />
+)}
+
+{lesson.pdf_file && (
+  <a
+    href={`http://127.0.0.1:8000/storage/${lesson.pdf_file}`}
+    target="_blank"
+    className="mt-4 inline-flex rounded-2xl bg-green-600 px-5 py-3 text-sm font-bold text-white hover:bg-green-700"
+  >
+    Télécharger le support PDF
+  </a>
+)}
                               </div>
                             </div>
 
