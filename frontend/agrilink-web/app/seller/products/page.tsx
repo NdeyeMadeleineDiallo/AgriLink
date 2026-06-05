@@ -119,9 +119,12 @@ export default function SellerProductsPage() {
                     </td>
                     <td className="p-4">
                       <div className="flex gap-2">
-                        <button className="rounded-xl bg-slate-100 p-2 text-slate-600">
-                          <Edit size={18} />
-                        </button>
+                        <Link
+                        href={`/seller/products/${product.id}/edit`}
+                        className="rounded-xl bg-slate-100 p-2 text-slate-600"
+                        >
+                      <Edit size={18} />
+                      </Link>
 
                         <button
                           onClick={() => deleteProduct(product.id)}
