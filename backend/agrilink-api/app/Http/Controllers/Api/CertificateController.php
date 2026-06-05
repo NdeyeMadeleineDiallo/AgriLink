@@ -8,6 +8,8 @@ use App\Models\Course;
 use App\Models\LessonProgress;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Storage;
 
 class CertificateController extends Controller
 {
@@ -40,15 +42,31 @@ class CertificateController extends Controller
         }
 
         $certificate = Certificate::firstOrCreate(
-            [
-                'user_id' => $request->user()->id,
-                'course_id' => $course->id,
-            ],
-            [
-                'certificate_number' => 'AGRILINK-' . now()->format('Ymd') . '-' . strtoupper(Str::random(8)),
-                'issued_at' => now(),
-            ]
-        );
+    [
+        'user_id' => $request->user()->id,
+        'course_id' => $course->id,
+    ],
+    [
+        'certificate_number' => 'AGRILINK-' . now()->format('Ymd') . '-' . strtoupper(Str::random(8)),
+        'issued_at' => now(),
+    ]
+);
+
+if (! $certificate->file_path) {
+    $pdf = Pdf::loadView('certificates.template', [
+        'user' => $request->user(),
+        'course' => $course,
+        'certificate' => $certificate,
+    ]);
+
+    $fileName = 'certificates/' . $certificate->certificate_number . '.pdf';
+
+    Storage::disk('public')->put($fileName, $pdf->output());
+
+    $certificate->update([
+        'file_path' => $fileName,
+    ]);
+}
 
         return response()->json([
             'message' => 'Certificat généré avec succès.',

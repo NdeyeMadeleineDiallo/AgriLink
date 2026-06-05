@@ -24,6 +24,7 @@ class ExpertProfile extends Model
         'is_verified',
         'is_premium',
         'status',
+        'photo',
     ];
 
     protected $casts = [

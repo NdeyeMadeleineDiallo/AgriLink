@@ -102,6 +102,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/experts', [ExpertProfileController::class, 'store']);
     Route::put('/experts/{expertProfile}', [ExpertProfileController::class, 'update']);
     Route::delete('/experts/{expertProfile}', [ExpertProfileController::class, 'destroy']);
+    Route::get('/my-expert-profile', [ExpertProfileController::class, 'myProfile']);
+    Route::post('/experts/{expertProfile}/photo', [ExpertProfileController::class, 'uploadPhoto']);
 });
 
 Route::middleware(['auth:sanctum', 'role:super_admin|admin'])->group(function () {

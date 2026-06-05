@@ -112,4 +112,30 @@ class ExpertProfileController extends Controller
             'message' => 'Profil expert supprimé avec succès.',
         ]);
     }
+
+    public function myProfile(Request $request)
+{
+    return response()->json([
+        'expert_profile' => $request->user()->expertProfile,
+    ]);
+}
+
+public function uploadPhoto(Request $request, ExpertProfile $expertProfile)
+{
+    $validated = $request->validate([
+        'photo' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+    ]);
+
+    $path = $request->file('photo')->store('experts', 'public');
+
+    $expertProfile->update([
+        'photo' => $path,
+    ]);
+
+    return response()->json([
+        'message' => 'Photo de profil mise à jour avec succès.',
+        'photo' => $path,
+        'url' => asset('storage/' . $path),
+    ]);
+}
 }
