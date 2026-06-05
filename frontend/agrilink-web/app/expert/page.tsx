@@ -121,9 +121,17 @@ export default function ExpertDashboardPage() {
 
                 {expert ? (
                   <div className="mt-5">
-                    <div className="flex h-20 w-20 items-center justify-center rounded-full bg-green-100 text-green-700">
-                      <User size={40} />
-                    </div>
+                    {expert?.photo ? (
+  <img
+    src={`http://127.0.0.1:8000/storage/${expert.photo}`}
+    alt="Photo expert"
+    className="h-20 w-20 rounded-full object-cover"
+  />
+) : (
+  <div className="flex h-20 w-20 items-center justify-center rounded-full bg-green-100 text-green-700">
+    <User size={40} />
+  </div>
+)}
 
                     <h4 className="mt-4 text-xl font-bold">
                       {expert.name}
