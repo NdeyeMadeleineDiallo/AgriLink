@@ -7,12 +7,16 @@ import AdminLayout from "@/src/components/layout/AdminLayout";
 import { getStoredUser } from "@/src/lib/auth";
 import { apiRequest } from "@/src/services/api";
 import { Trash2 } from "lucide-react";
+import ConfirmModal from "@/src/components/ui/ConfirmModal";
+import { PlusCircle } from "lucide-react";
 
 export default function AdminLessonsPage() {
   const [user, setUser] = useState<any>(null);
   const [courses, setCourses] = useState<any[]>([]);
   const [lessons, setLessons] = useState<any[]>([]);
   const [search, setSearch] = useState("");
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedLessonId, setSelectedLessonId] = useState<number | null>(null);
 
   useEffect(() => {
     const storedUser = getStoredUser();
@@ -58,15 +62,25 @@ export default function AdminLessonsPage() {
     lesson.title?.toLowerCase().includes(search.toLowerCase())
   );
 
-  async function deleteLesson(lessonId: number) {
-  if (!confirm("Voulez-vous vraiment supprimer cette leçon ?")) return;
+ function askDeleteLesson(lessonId: number) {
+  setSelectedLessonId(lessonId);
+  setDeleteModalOpen(true);
+}
+
+async function confirmDeleteLesson() {
+  if (!selectedLessonId) return;
 
   try {
-    await apiRequest(`/lessons/${lessonId}`, {
+    await apiRequest(`/lessons/${selectedLessonId}`, {
       method: "DELETE",
     });
 
-    setLessons((prev) => prev.filter((lesson) => lesson.id !== lessonId));
+    setLessons((prev) =>
+      prev.filter((lesson) => lesson.id !== selectedLessonId)
+    );
+
+    setDeleteModalOpen(false);
+    setSelectedLessonId(null);
   } catch (error) {
     console.error(error);
     alert("Erreur lors de la suppression de la leçon.");
@@ -84,7 +98,13 @@ export default function AdminLessonsPage() {
             Gérez les supports vidéos et PDF des formations AgriAcademy.
           </p>
         </div>
-
+<Link
+  href="/admin/lessons/create"
+  className="btn-primary inline-flex items-center gap-2"
+>
+  <PlusCircle size={18} />
+  Créer une leçon
+</Link>
         <div className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-3">
           <Search size={18} className="text-slate-400" />
           <input
@@ -174,7 +194,7 @@ export default function AdminLessonsPage() {
   </Link>
 
   <button
-  onClick={() => deleteLesson(lesson.id)}
+  onClick={() => askDeleteLesson(lesson.id)}
   className="inline-flex items-center gap-2 rounded-2xl bg-red-100 px-4 py-2 text-sm font-bold text-red-700 hover:bg-red-200"
 >
   <Trash2 size={16} />
@@ -187,6 +207,18 @@ export default function AdminLessonsPage() {
           </tbody>
         </table>
       </div>
+      <ConfirmModal
+  open={deleteModalOpen}
+  title="Supprimer cette leçon ?"
+  message="Cette action supprimera la leçon sélectionnée. Cette opération est irréversible."
+  confirmText="Oui, supprimer"
+  cancelText="Annuler"
+  onConfirm={confirmDeleteLesson}
+  onCancel={() => {
+    setDeleteModalOpen(false);
+    setSelectedLessonId(null);
+  }}
+/>
     </AdminLayout>
   );
 }
