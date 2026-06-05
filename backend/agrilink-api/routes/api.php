@@ -49,6 +49,7 @@ Route::middleware(['auth:sanctum', 'role:super_admin|admin'])->group(function ()
     Route::post('/courses/{course}/lessons', [LessonController::class, 'store']);
     Route::put('/lessons/{lesson}', [LessonController::class, 'update']);
     Route::delete('/lessons/{lesson}', [LessonController::class, 'destroy']);
+    Route::post('/lessons/{lesson}/media', [LessonController::class, 'uploadMedia']);
 });
 
 Route::get('/cohorts', [CohortController::class, 'index']);

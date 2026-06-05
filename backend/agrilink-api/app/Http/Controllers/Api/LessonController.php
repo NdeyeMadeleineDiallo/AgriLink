@@ -84,4 +84,30 @@ class LessonController extends Controller
             'message' => 'Leçon supprimée avec succès.',
         ]);
     }
+
+
+    public function uploadMedia(Request $request, Lesson $lesson)
+{
+    $validated = $request->validate([
+        'video' => ['nullable', 'file', 'mimes:mp4,mov,avi,webm', 'max:51200'],
+        'pdf' => ['nullable', 'file', 'mimes:pdf', 'max:10240'],
+    ]);
+
+    $data = [];
+
+    if ($request->hasFile('video')) {
+        $data['video_file'] = $request->file('video')->store('lessons/videos', 'public');
+    }
+
+    if ($request->hasFile('pdf')) {
+        $data['pdf_file'] = $request->file('pdf')->store('lessons/pdfs', 'public');
+    }
+
+    $lesson->update($data);
+
+    return response()->json([
+        'message' => 'Médias de la leçon mis à jour avec succès.',
+        'lesson' => $lesson,
+    ]);
+}
 }
