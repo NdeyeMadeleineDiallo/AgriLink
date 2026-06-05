@@ -1,10 +1,11 @@
-import { BookOpen, CreditCard, Home, Layers, ShoppingBasket, Users } from "lucide-react";
+import { BookOpen, CreditCard, FileVideo, Home, Layers, ShoppingBasket, Users } from "lucide-react";
 import Link from "next/link";
 
 export default function AdminSidebar() {
   const items = [
     { label: "Dashboard", href: "/admin", icon: <Home size={20} /> },
     { label: "Cours", href: "/admin/courses", icon: <BookOpen size={20} /> },
+    { label: "Leçons", href: "/admin/lessons", icon: <FileVideo size={20} /> },
     { label: "Cohortes", href: "/admin/cohorts", icon: <Layers size={20} /> },
     { label: "Produits", href: "/admin/products", icon: <ShoppingBasket size={20} /> },
     { label: "Experts", href: "/admin/experts", icon: <Users size={20} /> },
