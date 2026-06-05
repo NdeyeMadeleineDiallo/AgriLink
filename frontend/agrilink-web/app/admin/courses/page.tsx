@@ -6,10 +6,14 @@ import { Trash2 } from "lucide-react";
 import AdminLayout from "@/src/components/layout/AdminLayout";
 import { getStoredUser } from "@/src/lib/auth";
 import { apiRequest } from "@/src/services/api";
+import ConfirmModal from "@/src/components/ui/ConfirmModal";
+
 
 export default function CoursesPage() {
   const [user, setUser] = useState<any>(null);
   const [courses, setCourses] = useState<any[]>([]);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedCourseId, setSelectedCourseId] = useState<number | null>(null);
 
   useEffect(() => {
     const storedUser = getStoredUser();
@@ -33,20 +37,30 @@ export default function CoursesPage() {
     loadCourses();
   }, []);
 
-  async function deleteCourse(courseId: number) {
-    if (!confirm("Voulez-vous vraiment supprimer ce cours ?")) return;
+  function askDeleteCourse(courseId: number) {
+  setSelectedCourseId(courseId);
+  setDeleteModalOpen(true);
+}
 
-    try {
-      await apiRequest(`/courses/${courseId}`, {
-        method: "DELETE",
-      });
+async function confirmDeleteCourse() {
+  if (!selectedCourseId) return;
 
-      setCourses((prev) => prev.filter((course) => course.id !== courseId));
-    } catch (error) {
-      console.error(error);
-      alert("Erreur lors de la suppression du cours.");
-    }
+  try {
+    await apiRequest(`/courses/${selectedCourseId}`, {
+      method: "DELETE",
+    });
+
+    setCourses((prev) =>
+      prev.filter((course) => course.id !== selectedCourseId)
+    );
+
+    setDeleteModalOpen(false);
+    setSelectedCourseId(null);
+  } catch (error) {
+    console.error(error);
+    alert("Erreur lors de la suppression du cours.");
   }
+}
 
   if (!user) return null;
 
@@ -117,7 +131,7 @@ export default function CoursesPage() {
                     </Link>
 
                     <button
-                      onClick={() => deleteCourse(course.id)}
+                      onClick={() => askDeleteCourse(course.id)}
                       className="inline-flex items-center gap-2 rounded-2xl bg-red-100 px-4 py-2 text-sm font-bold text-red-700 hover:bg-red-200"
                     >
                       <Trash2 size={16} />
@@ -130,6 +144,18 @@ export default function CoursesPage() {
           </tbody>
         </table>
       </div>
+      <ConfirmModal
+  open={deleteModalOpen}
+  title="Supprimer ce cours ?"
+  message="Cette action supprimera le cours sélectionné. Cette opération est irréversible."
+  confirmText="Oui, supprimer"
+  cancelText="Annuler"
+  onConfirm={confirmDeleteCourse}
+  onCancel={() => {
+    setDeleteModalOpen(false);
+    setSelectedCourseId(null);
+  }}
+/>
     </AdminLayout>
   );
 }
