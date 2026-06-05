@@ -86,6 +86,7 @@ export default function SellerProductsPage() {
             <table className="w-full">
               <thead className="bg-slate-50">
                 <tr>
+                  <th className="p-4 text-left">Image</th>
                   <th className="p-4 text-left">Produit</th>
                   <th className="p-4 text-left">Prix</th>
                   <th className="p-4 text-left">Quantité</th>
@@ -98,7 +99,7 @@ export default function SellerProductsPage() {
               <tbody>
                 {products.length === 0 && (
                   <tr>
-                    <td colSpan={6} className="p-6 text-center text-slate-500">
+                    <td colSpan={7} className="p-6 text-center text-slate-500">
                       Aucun produit publié.
                     </td>
                   </tr>
@@ -106,7 +107,21 @@ export default function SellerProductsPage() {
 
                 {products.map((product) => (
                   <tr key={product.id} className="border-t">
-                    <td className="p-4 font-bold text-slate-900">{product.title}</td>
+                    <td className="p-4">
+  {product.images?.length > 0 ? (
+    <img
+      src={`http://127.0.0.1:8000/storage/${product.images[0].image_path}`}
+      alt={product.title}
+      className="h-14 w-14 rounded-2xl object-cover"
+    />
+  ) : (
+    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 text-xs font-bold text-slate-400">
+      Image
+    </div>
+  )}
+</td>
+
+<td className="p-4 font-bold text-slate-900">{product.title}</td>
                     <td className="p-4">{product.price} FCFA</td>
                     <td className="p-4">
                       {product.quantity} {product.unit}
