@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import AdminLayout from "@/src/components/layout/AdminLayout";
 import { getStoredUser } from "@/src/lib/auth";
 import { apiRequest } from "@/src/services/api";
+import Link from "next/link";
 
 export default function CoursesPage() {
   const [user, setUser] = useState<any>(null);
@@ -44,6 +45,10 @@ export default function CoursesPage() {
           Liste des formations AgriAcademy.
         </p>
       </div>
+       <Link href="/admin/courses/create" className="btn-primary">
+  Créer un cours
+</Link>
+     
 
       <div className="card overflow-hidden">
         <table className="w-full">
