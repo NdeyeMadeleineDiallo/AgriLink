@@ -6,6 +6,7 @@ import Link from "next/link";
 import AdminLayout from "@/src/components/layout/AdminLayout";
 import { getStoredUser } from "@/src/lib/auth";
 import { apiRequest } from "@/src/services/api";
+import { Trash2 } from "lucide-react";
 
 export default function AdminLessonsPage() {
   const [user, setUser] = useState<any>(null);
@@ -56,6 +57,21 @@ export default function AdminLessonsPage() {
   const filteredLessons = lessons.filter((lesson) =>
     lesson.title?.toLowerCase().includes(search.toLowerCase())
   );
+
+  async function deleteLesson(lessonId: number) {
+  if (!confirm("Voulez-vous vraiment supprimer cette leçon ?")) return;
+
+  try {
+    await apiRequest(`/lessons/${lessonId}`, {
+      method: "DELETE",
+    });
+
+    setLessons((prev) => prev.filter((lesson) => lesson.id !== lessonId));
+  } catch (error) {
+    console.error(error);
+    alert("Erreur lors de la suppression de la leçon.");
+  }
+}
 
   return (
     <AdminLayout user={user}>
@@ -156,6 +172,14 @@ export default function AdminLessonsPage() {
     <Upload size={16} />
     Médias
   </Link>
+
+  <button
+  onClick={() => deleteLesson(lesson.id)}
+  className="inline-flex items-center gap-2 rounded-2xl bg-red-100 px-4 py-2 text-sm font-bold text-red-700 hover:bg-red-200"
+>
+  <Trash2 size={16} />
+  Supprimer
+</button>
 </div>
                 </td>
               </tr>
