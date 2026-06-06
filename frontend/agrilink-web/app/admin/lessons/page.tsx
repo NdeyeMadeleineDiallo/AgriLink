@@ -103,6 +103,7 @@ async function confirmDeleteLesson() {
   className="btn-primary inline-flex items-center gap-2"
 >
   <PlusCircle size={18} />
+
   Créer une leçon
 </Link>
         <div className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 py-3">
