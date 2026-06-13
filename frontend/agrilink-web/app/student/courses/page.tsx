@@ -33,16 +33,27 @@ export default function StudentCoursesPage() {
     loadCourses();
   }, []);
 
-  async function loadCourses() {
-    try {
-      const data = await apiRequest("/courses");
-      setCourses(data.data || []);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
+ async function loadCourses() {
+  try {
+    const coursesData = await apiRequest("/courses");
+    const progressData = await apiRequest("/my-progress");
+
+    const allCourses = coursesData.data || [];
+    const myProgress = progressData.progress || [];
+
+    const myCourseIds = myProgress.map((item: any) => item.course_id);
+
+    const myCourses = allCourses.filter((course: any) =>
+      myCourseIds.includes(course.id)
+    );
+
+    setCourses(myCourses);
+  } catch (error) {
+    console.error(error);
+  } finally {
+    setLoading(false);
   }
+}
 
   async function openCourse(course: any) {
     setSelectedCourse(course);
@@ -154,7 +165,9 @@ export default function StudentCoursesPage() {
             <div className="lg:col-span-2">
               {!selectedCourse ? (
                 <div className="card p-8 text-slate-500">
-                h  Sélectionnez un cours pour voir les leçons.
+                {courses.length === 0
+  ? "Vous n’êtes inscrit à aucun cours pour le moment."
+  : "Sélectionnez un cours pour voir les leçons."}
                 </div>
               ) : (
                 <div className="card p-6">

@@ -11,6 +11,7 @@ export default function AdminSidebar() {
     { label: "Produits", href: "/admin/products", icon: <ShoppingBasket size={20} /> },
     { label: "Experts", href: "/admin/experts", icon: <Users size={20} /> },
     { label: "Paiements", href: "/admin/payments", icon: <CreditCard size={20} /> },
+    { label: "Utilisateurs", href: "/admin/users", icon: <Users size={20} /> },
     
   ];
 
