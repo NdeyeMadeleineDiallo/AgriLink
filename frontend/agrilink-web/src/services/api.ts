@@ -3,7 +3,9 @@ import {
   getStoredToken,
 } from "@/src/lib/auth";
 
-const API_URL = "http://127.0.0.1:8000/api";
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL ||
+  "http://127.0.0.1:8000/api";
 
 async function parseResponse(response: Response) {
   const contentType = response.headers.get("content-type");
