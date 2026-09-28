@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   ArrowLeft,
@@ -50,7 +50,7 @@ type QuizResult = {
   attempt?: any;
 };
 
-export default function StudentQuizPage() {
+function StudentQuizContent() {
   const searchParams = useSearchParams();
   const lessonId = searchParams.get("lesson_id");
 
@@ -796,4 +796,27 @@ function getOptions(
       label: question.option_d,
     },
   ];
+}
+
+
+export default function StudentQuizPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="min-h-screen bg-[#F8FAFC]">
+          <div className="container-page flex min-h-screen items-center justify-center">
+            <div className="flex items-center gap-3 rounded-[24px] border border-slate-100 bg-white px-8 py-6 text-sm font-semibold text-slate-500 shadow-lg shadow-slate-200/50">
+              <LoaderCircle
+                size={22}
+                className="animate-spin text-green-700"
+              />
+              Chargement du quiz...
+            </div>
+          </div>
+        </main>
+      }
+    >
+      <StudentQuizContent />
+    </Suspense>
+  );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   ArrowLeft,
@@ -15,7 +15,11 @@ import Link from "next/link";
 import { getStoredUser } from "@/src/lib/auth";
 import { apiRequest } from "@/src/services/api";
 
-export default function StudentVideoPage() {
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL?.replace(/\/api\/?$/, "") ||
+  "http://127.0.0.1:8000";
+
+function StudentVideoContent() {
   const searchParams = useSearchParams();
   const lessonId = searchParams.get("lesson_id");
 
@@ -197,7 +201,7 @@ export default function StudentVideoPage() {
                   <video
                     controls
                     className="aspect-video w-full bg-black"
-                    src={`http://127.0.0.1:8000/storage/${lesson.video_file}`}
+                    src={`${API_BASE_URL}/storage/${lesson.video_file}`}
                   />
                 ) : (
                   <div className="flex aspect-video items-center justify-center text-white/70">
@@ -221,7 +225,7 @@ export default function StudentVideoPage() {
                 <div className="flex gap-3">
                   {previousLesson ? (
                     <Link
-                      href={`/student/video?lesson_id=${previousLesson.id}`}
+                      href={`${API_BASE_URL}/storage/${lesson.pdf_file}`}
                       className="inline-flex items-center gap-2 rounded-2xl bg-slate-100 px-5 py-3 font-black text-slate-700 hover:bg-slate-200"
                     >
                       <ChevronLeft size={18} />
@@ -322,5 +326,22 @@ export default function StudentVideoPage() {
         )}
       </section>
     </main>
+  );
+}
+export default function StudentVideoPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="min-h-screen bg-[#F8FAFC]">
+          <div className="container-page flex min-h-screen items-center justify-center">
+            <div className="rounded-[24px] border border-slate-100 bg-white px-8 py-6 text-sm font-semibold text-slate-500 shadow-lg shadow-slate-200/50">
+              Chargement de la leçon...
+            </div>
+          </div>
+        </main>
+      }
+    >
+      <StudentVideoContent />
+    </Suspense>
   );
 }

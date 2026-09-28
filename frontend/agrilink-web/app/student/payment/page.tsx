@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   ArrowLeft,
@@ -25,7 +25,7 @@ const formations: any = {
   },
 };
 
-export default function StudentPaymentPage() {
+function StudentPaymentContent() {
   const searchParams = useSearchParams();
   const level = searchParams.get("level") || "intermediaire";
   const amount = Number(searchParams.get("amount") || formations[level]?.amount || 0);
@@ -216,5 +216,23 @@ function PaymentMethod({
       <h4 className="mt-4 font-black">{title}</h4>
       <p className="mt-1 text-sm">{description}</p>
     </button>
+  );
+}
+
+export default function StudentPaymentPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="min-h-screen bg-[#F8FAFC]">
+          <div className="container-page flex min-h-screen items-center justify-center">
+            <div className="rounded-[24px] border border-slate-100 bg-white px-8 py-6 text-sm font-semibold text-slate-500 shadow-lg shadow-slate-200/50">
+              Chargement du paiement...
+            </div>
+          </div>
+        </main>
+      }
+    >
+      <StudentPaymentContent />
+    </Suspense>
   );
 }

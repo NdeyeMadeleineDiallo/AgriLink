@@ -1,14 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import { CheckCircle2, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { getStoredUser } from "@/src/lib/auth";
 
 export default function PaymentSuccessPage() {
-  const searchParams = useSearchParams();
-  const level = searchParams.get("level") || "intermediaire";
   const [user, setUser] = useState<any>(null);
 
   useEffect(() => {

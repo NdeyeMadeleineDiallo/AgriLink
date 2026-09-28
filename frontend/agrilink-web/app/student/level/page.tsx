@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   ArrowLeft,
@@ -15,9 +15,11 @@ import Link from "next/link";
 import { getStoredUser } from "@/src/lib/auth";
 import { apiRequest } from "@/src/services/api";
 
-const API_BASE_URL = "http://127.0.0.1:8000";
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL?.replace(/\/api\/?$/, "") ||
+  "http://127.0.0.1:8000";
 
-export default function StudentLevelPage() {
+function StudentLevelContent() {
   const searchParams = useSearchParams();
   const requestedLevel = searchParams.get("level") || "";
 
@@ -350,4 +352,22 @@ function getCourseThumbnailUrl(course: any): string | null {
     .replace(/^storage\//, "");
 
   return `${API_BASE_URL}/storage/${cleanPath}`;
+}
+
+export default function StudentLevelPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="min-h-screen bg-[#F8FAFC]">
+          <div className="container-page flex min-h-screen items-center justify-center">
+            <div className="rounded-[24px] border border-slate-100 bg-white px-8 py-6 text-sm font-semibold text-slate-500 shadow-lg shadow-slate-200/50">
+              Chargement des formations...
+            </div>
+          </div>
+        </main>
+      }
+    >
+      <StudentLevelContent />
+    </Suspense>
+  );
 }

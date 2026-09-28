@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   ArrowLeft,
@@ -23,7 +23,7 @@ import { apiRequest } from "@/src/services/api";
 
 const API_BASE_URL = "http://127.0.0.1:8000";
 
-export default function StudentCoursePage() {
+function StudentCourseContent() {
   const searchParams = useSearchParams();
   const courseId = searchParams.get("course_id");
 
@@ -753,4 +753,28 @@ function formatDuration(
   }
 
   return `${hours} h ${remainingMinutes} min`;
+
+  
+}
+
+export default function StudentCoursePage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="min-h-screen bg-[#F8FAFC]">
+          <div className="container-page py-10">
+            <div className="flex items-center justify-center gap-3 rounded-[24px] border border-slate-100 bg-white p-10 text-slate-500 shadow-lg">
+              <LoaderCircle
+                size={22}
+                className="animate-spin text-green-700"
+              />
+              Chargement du cours...
+            </div>
+          </div>
+        </main>
+      }
+    >
+      <StudentCourseContent />
+    </Suspense>
+  );
 }
