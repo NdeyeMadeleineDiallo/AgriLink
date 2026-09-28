@@ -1,42 +1,73 @@
+const USER_KEY = "agrilink_user";
+const TOKEN_KEY = "agrilink_token";
+
+export function saveAuthSession(user: any, token: string) {
+  if (typeof window === "undefined") return;
+
+  clearAuthSession();
+
+  sessionStorage.setItem(USER_KEY, JSON.stringify(user));
+  sessionStorage.setItem(TOKEN_KEY, token);
+}
+
 export function getStoredUser() {
   if (typeof window === "undefined") return null;
 
-  const storedUser = localStorage.getItem("agrilink_user");
+  const storedUser = sessionStorage.getItem(USER_KEY);
 
   if (!storedUser) return null;
 
-  return JSON.parse(storedUser);
+  try {
+    return JSON.parse(storedUser);
+  } catch (error) {
+    console.error("Utilisateur stocké invalide :", error);
+    clearAuthSession();
+    return null;
+  }
 }
 
 export function getStoredToken() {
   if (typeof window === "undefined") return null;
 
-  return localStorage.getItem("agrilink_token");
+  return sessionStorage.getItem(TOKEN_KEY);
+}
+
+export function clearAuthSession() {
+  if (typeof window === "undefined") return;
+
+  sessionStorage.removeItem(USER_KEY);
+  sessionStorage.removeItem(TOKEN_KEY);
+
+  /*
+   * Nettoyage des anciennes données enregistrées
+   * avec l’ancienne version de l’application.
+   */
+  localStorage.removeItem(USER_KEY);
+  localStorage.removeItem(TOKEN_KEY);
+
+  localStorage.removeItem("user");
+  localStorage.removeItem("token");
+  localStorage.removeItem("auth_token");
+  localStorage.removeItem("access_token");
 }
 
 export function logout() {
-  localStorage.removeItem("agrilink_user");
-  localStorage.removeItem("agrilink_token");
+  clearAuthSession();
   window.location.href = "/login";
 }
 
 export function redirectByRole(user: any) {
-  const role = user?.roles?.[0];
+  const firstRole = user?.roles?.[0];
+
+  const role =
+    typeof firstRole === "string"
+      ? firstRole
+      : firstRole?.name;
 
   if (role === "super_admin" || role === "admin") {
     window.location.href = "/admin";
     return;
   }
 
-  if (role === "expert") {
-    window.location.href = "/expert";
-    return;
-  }
-
-  if (role === "vendeur") {
-    window.location.href = "/seller";
-    return;
-  }
-
-  window.location.href = "/student";
+  window.location.href = "/profile";
 }

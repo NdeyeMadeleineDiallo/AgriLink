@@ -15,6 +15,9 @@ use App\Http\Controllers\Api\LessonProgressController;
 use App\Http\Controllers\Api\CertificateController;
 use App\Http\Controllers\Api\SubscriptionController;
 use App\Http\Controllers\Api\PaymentController;
+use App\Http\Controllers\Api\CourseEnrollmentController;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\QuizController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -33,10 +36,14 @@ Route::middleware(['auth:sanctum', 'role:vendeur'])->get('/vendeur/dashboard', [
 
 Route::middleware(['auth:sanctum', 'role:expert'])->get('/expert/dashboard', [DashboardController::class, 'expert']);
 
+
 Route::get('/courses', [CourseController::class, 'index']);
 Route::get('/courses/{course}', [CourseController::class, 'show']);
 
 Route::middleware(['auth:sanctum', 'role:super_admin|admin'])->group(function () {
+    Route::get('/admin/users', [UserController::class, 'index']);
+Route::patch('/admin/users/{user}/role', [UserController::class, 'updateRole']);
+Route::patch('/admin/users/{user}/status', [UserController::class, 'updateStatus']);
     Route::post('/courses', [CourseController::class, 'store']);
     Route::put('/courses/{course}', [CourseController::class, 'update']);
     Route::delete('/courses/{course}', [CourseController::class, 'destroy']);
@@ -70,6 +77,10 @@ Route::middleware(['auth:sanctum','role:super_admin|admin'])->group(function () 
     Route::delete('/cohorts/{cohort}/users/{user}', [CohortController::class, 'removeUser']);
 
     Route::get('/cohorts/{cohort}/stats', [CohortController::class, 'stats']);
+    Route::get('/enrollments', [CourseEnrollmentController::class, 'index']);
+Route::post('/enrollments', [CourseEnrollmentController::class, 'enroll']);
+Route::get('/courses/{course}/users', [CourseEnrollmentController::class, 'courseUsers']);
+Route::delete('/courses/{course}/users/{user}', [CourseEnrollmentController::class, 'unenroll']);
 });
 
 Route::get('/categories', [CategoryController::class, 'index']);
@@ -90,6 +101,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('/products/{product}', [ProductController::class, 'destroy']);
     Route::post('/products/{product}/images', [ProductImageController::class, 'store']);
     Route::delete('/product-images/{image}', [ProductImageController::class, 'destroy']);
+    Route::get('/my-courses', [CourseEnrollmentController::class, 'myCourses']);
 });
 
 Route::middleware(['auth:sanctum', 'role:super_admin|admin'])->group(function () {
@@ -118,8 +130,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/lessons/{lesson}/complete', [LessonProgressController::class, 'complete']);
     Route::get('/my-progress', [LessonProgressController::class, 'myProgress']);
     Route::get('/courses/{course}/progress', [LessonProgressController::class, 'courseProgress']);
-    Route::post('/courses/{course}/certificate', [CertificateController::class, 'generate']);
+    Route::post('/certificate/generate',[CertificateController::class, 'generate']);
     Route::get('/my-certificates', [CertificateController::class, 'myCertificates']);
+    Route::post('/experts/{expertProfile}/ratings',[ExpertProfileController::class,'storeRating',]);
+    Route::get('/lessons/{lesson}/quiz',[QuizController::class, 'showByLesson']);
+    Route::post('/lessons/{lesson}/quiz/submit',[QuizController::class, 'submit']);
+    Route::get('/certificate/status',[CertificateController::class, 'status']);
 });
 
 Route::middleware(['auth:sanctum', 'role:super_admin|admin|expert'])->group(function () {
@@ -131,6 +147,8 @@ Route::middleware(['auth:sanctum', 'role:super_admin|admin|expert'])->group(func
 Route::middleware(['auth:sanctum', 'role:super_admin|admin'])->group(function () {
     Route::post('/subscriptions', [SubscriptionController::class, 'store']);
     Route::get('/payments', [PaymentController::class, 'payments']);
+    Route::get('/admin/lessons/{lesson}/quiz',[QuizController::class, 'adminShow']);
+    Route::post('/admin/lessons/{lesson}/quiz',[QuizController::class, 'save']);
 });
 
 Route::middleware(['auth:sanctum'])->group(function () {

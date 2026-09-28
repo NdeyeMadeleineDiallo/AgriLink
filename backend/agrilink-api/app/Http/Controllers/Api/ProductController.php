@@ -10,51 +10,80 @@ use Illuminate\Support\Str;
 class ProductController extends Controller
 {
     public function index()
-    {
-        $products = Product::with(['user', 'category', 'images'])
-            ->latest()
-            ->paginate(10);
+{
+    $products = Product::with([
+        'images',
+        'category',
+        'user',
+    ])
+        ->latest()
+        ->get();
 
-        return response()->json($products);
-    }
+    return response()->json([
+        'data' => $products,
+    ]);
+}
 
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'category_id' => ['nullable', 'exists:categories,id'],
-            'title' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
-            'price' => ['nullable', 'integer'],
-            'quantity' => ['nullable', 'string', 'max:100'],
-            'unit' => ['nullable', 'string', 'max:50'],
-            'region' => ['nullable', 'string', 'max:100'],
-            'city' => ['nullable', 'string', 'max:100'],
-            'phone' => ['nullable', 'string', 'max:30'],
-            'whatsapp_number' => ['nullable', 'string', 'max:30'],
-        ]);
+{
+    $validated = $request->validate([
+        'category_id' => ['nullable', 'exists:categories,id'],
+        'title' => ['required', 'string', 'max:255'],
+        'description' => ['nullable', 'string'],
+        'price' => ['nullable', 'numeric', 'min:0'],
+        'quantity' => ['nullable', 'numeric', 'min:0'],
+        'unit' => ['nullable', 'string', 'max:50'],
+        'region' => ['nullable', 'string', 'max:100'],
+        'city' => ['nullable', 'string', 'max:100'],
+        'phone' => ['nullable', 'string', 'max:30'],
+        'whatsapp_number' => ['nullable', 'string', 'max:30'],
 
-        $product = Product::create([
-            'user_id' => $request->user()->id,
-            'category_id' => $validated['category_id'] ?? null,
-            'title' => $validated['title'],
-            'slug' => Str::slug($validated['title']) . '-' . Str::random(6),
-            'description' => $validated['description'] ?? null,
-            'price' => $validated['price'] ?? null,
-            'quantity' => $validated['quantity'] ?? null,
-            'unit' => $validated['unit'] ?? null,
-            'region' => $validated['region'] ?? null,
-            'city' => $validated['city'] ?? null,
-            'phone' => $validated['phone'] ?? null,
-            'whatsapp_number' => $validated['whatsapp_number'] ?? null,
-            'status' => 'pending',
-            'is_featured' => false,
-        ]);
+        'images' => ['required', 'array', 'min:1', 'max:4'],
+        'images.*' => [
+            'required',
+            'image',
+            'mimes:jpg,jpeg,png,webp',
+            'max:5120',
+        ],
+    ]);
 
-        return response()->json([
-            'message' => 'Annonce publiée avec succès. Elle est en attente de validation.',
-            'product' => $product,
-        ], 201);
+    $product = Product::create([
+        'user_id' => $request->user()->id,
+        'category_id' => $validated['category_id'] ?? null,
+        'title' => $validated['title'],
+        'slug' => Str::slug($validated['title']) . '-' . Str::random(6),
+        'description' => $validated['description'] ?? null,
+        'price' => $validated['price'] ?? null,
+        'quantity' => $validated['quantity'] ?? null,
+        'unit' => $validated['unit'] ?? null,
+        'region' => $validated['region'] ?? null,
+        'city' => $validated['city'] ?? null,
+        'phone' => $validated['phone'] ?? null,
+        'whatsapp_number' => $validated['whatsapp_number'] ?? null,
+        'status' => 'approved',
+        'is_featured' => false,
+    ]);
+
+    foreach ($request->file('images', []) as $index => $image) {
+        $imagePath = $image->store('products', 'public');
+
+        $product->images()->create([
+            'image_path' => $imagePath,
+            'is_primary' => $index === 0,
+        ]);
     }
+
+    $product->load([
+        'images',
+        'category',
+        'user',
+    ]);
+
+    return response()->json([
+        'message' => 'Annonce publiée avec succès et visible sur AgriMarket.',
+        'product' => $product,
+    ], 201);
+}
 
     public function show(Product $product)
     {

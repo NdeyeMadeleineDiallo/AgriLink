@@ -1,7 +1,22 @@
-import { BookOpen, CreditCard, FileVideo, Home, Layers, ShoppingBasket, Users, UserPlus } from "lucide-react";
+"use client";
+
+import {
+  BookOpen,
+  CreditCard,
+  FileVideo,
+  Home,
+  Layers,
+  ShoppingBasket,
+  Users,
+  UserPlus,
+} from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 export default function AdminSidebar() {
+  const pathname = usePathname();
+
   const items = [
     { label: "Dashboard", href: "/admin", icon: <Home size={20} /> },
     { label: "Cours", href: "/admin/courses", icon: <BookOpen size={20} /> },
@@ -12,32 +27,47 @@ export default function AdminSidebar() {
     { label: "Experts", href: "/admin/experts", icon: <Users size={20} /> },
     { label: "Paiements", href: "/admin/payments", icon: <CreditCard size={20} /> },
     { label: "Utilisateurs", href: "/admin/users", icon: <Users size={20} /> },
-    
   ];
 
   return (
-    <aside className="hidden min-h-screen w-72 border-r border-slate-200 bg-white p-6 lg:block">
-      <Link href="/" className="flex items-center gap-3">
-        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#16A34A] text-lg font-bold text-white">
-          AL
+    <aside className="fixed left-0 top-0 z-40 hidden h-screen w-72 overflow-y-auto border-r border-slate-100 bg-white px-7 py-5 lg:block">
+      <Link href="/admin" className="block text-center">
+        <div className="relative mx-auto h-24 w-40">
+          <Image
+            src="/images/agrilink-logo.png"
+            alt="AgriLink"
+            fill
+            className="object-contain"
+            priority
+          />
         </div>
-        <div>
-          <h1 className="text-xl font-black text-slate-950">AgriLink</h1>
-          <p className="text-xs text-slate-500">Admin Panel</p>
-        </div>
+
+        <p className="-mt-2 text-xs font-black uppercase tracking-[0.35em] text-green-700">
+          Admin Panel
+        </p>
       </Link>
 
-      <nav className="mt-10 space-y-2">
-        {items.map((item) => (
-          <Link
-            key={item.label}
-            href={item.href}
-            className="flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-semibold text-slate-600 hover:bg-green-50 hover:text-green-700"
-          >
-            {item.icon}
-            {item.label}
-          </Link>
-        ))}
+      <nav className="mt-10 space-y-1.5">
+        {items.map((item) => {
+          const active =
+            pathname === item.href ||
+            (item.href !== "/admin" && pathname.startsWith(item.href));
+
+          return (
+            <Link
+              key={item.label}
+              href={item.href}
+              className={`flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-bold transition-all duration-200 ${
+                active
+                  ? "bg-green-100 text-green-700 shadow-sm"
+                  : "text-slate-600 hover:bg-green-50 hover:text-green-700"
+              }`}
+            >
+              {item.icon}
+              {item.label}
+            </Link>
+          );
+        })}
       </nav>
     </aside>
   );

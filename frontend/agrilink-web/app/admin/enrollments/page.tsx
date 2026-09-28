@@ -1,7 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { PlusCircle, Trash2 } from "lucide-react";
+import {
+  BookOpen,
+  GraduationCap,
+  PlusCircle,
+  Search,
+  Trash2,
+  UserCheck,
+  Users,
+} from "lucide-react";
 import AdminLayout from "@/src/components/layout/AdminLayout";
 import ConfirmModal from "@/src/components/ui/ConfirmModal";
 import { getStoredUser } from "@/src/lib/auth";
@@ -13,6 +21,7 @@ export default function AdminEnrollmentsPage() {
   const [users, setUsers] = useState<any[]>([]);
   const [courses, setCourses] = useState<any[]>([]);
   const [message, setMessage] = useState("");
+  const [search, setSearch] = useState("");
 
   const [form, setForm] = useState({
     user_id: "",
@@ -115,21 +124,76 @@ export default function AdminEnrollmentsPage() {
 
   if (!user) return null;
 
+  const filteredEnrollments = enrollments.filter((enrollment) =>
+    `${enrollment.user?.name || ""} ${enrollment.user?.email || ""} ${
+      enrollment.course?.title || ""
+    } ${enrollment.status || ""}`
+      .toLowerCase()
+      .includes(search.toLowerCase())
+  );
+
+  const activeCount = enrollments.filter(
+    (enrollment) => enrollment.status === "active"
+  ).length;
+
   return (
     <AdminLayout user={user}>
-      <div className="mb-8">
-        <h1 className="text-3xl font-black text-slate-950">
-          Inscriptions aux cours
-        </h1>
-        <p className="mt-2 text-slate-500">
-          Inscrivez les apprenants aux formations AgriAcademy.
-        </p>
+      <div className="mb-7 flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+        <div>
+          <p className="text-sm font-black uppercase tracking-wide text-green-700">
+            AgriAcademy
+          </p>
+
+          <h1 className="mt-2 text-3xl font-black text-slate-950">
+            Inscriptions aux cours
+          </h1>
+
+          <p className="mt-2 max-w-2xl text-slate-500">
+            Inscrivez les apprenants aux formations et suivez les accès aux cours.
+          </p>
+        </div>
       </div>
 
-      <form onSubmit={handleEnroll} className="card mb-8 p-6">
-        <h2 className="text-xl font-black text-slate-950">
-          Nouvelle inscription
-        </h2>
+      <div className="mb-7 grid gap-5 md:grid-cols-3">
+        <StatBox
+          icon={<Users size={22} />}
+          label="Total inscriptions"
+          value={enrollments.length}
+          color="green"
+        />
+        <StatBox
+          icon={<UserCheck size={22} />}
+          label="Inscriptions actives"
+          value={activeCount}
+          color="orange"
+        />
+        <StatBox
+          icon={<BookOpen size={22} />}
+          label="Cours disponibles"
+          value={courses.length}
+          color="slate"
+        />
+      </div>
+
+      <form
+        onSubmit={handleEnroll}
+        className="mb-7 rounded-[24px] border border-slate-100 bg-white p-5 shadow-md shadow-slate-200/60"
+      >
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <h2 className="text-xl font-black text-slate-950">
+              Nouvelle inscription
+            </h2>
+            <p className="mt-1 text-sm font-medium text-slate-500">
+              Associez rapidement un apprenant à un cours.
+            </p>
+          </div>
+
+          <button className="inline-flex items-center justify-center gap-2 rounded-2xl bg-green-600 px-6 py-3 font-black text-white shadow-md shadow-green-200 transition hover:bg-green-700">
+            <PlusCircle size={18} />
+            Inscrire
+          </button>
+        </div>
 
         {message && (
           <div className="mt-4 rounded-2xl bg-green-50 p-4 text-sm font-bold text-green-700">
@@ -137,11 +201,11 @@ export default function AdminEnrollmentsPage() {
           </div>
         )}
 
-        <div className="mt-5 grid gap-4 md:grid-cols-4">
+        <div className="mt-5 grid gap-4 md:grid-cols-3">
           <select
             value={form.user_id}
             onChange={(e) => updateField("user_id", e.target.value)}
-            className="rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-green-500"
+            className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium outline-none focus:border-green-500"
           >
             <option value="">Choisir un apprenant</option>
             {users.map((availableUser) => (
@@ -154,7 +218,7 @@ export default function AdminEnrollmentsPage() {
           <select
             value={form.course_id}
             onChange={(e) => updateField("course_id", e.target.value)}
-            className="rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-green-500"
+            className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium outline-none focus:border-green-500"
           >
             <option value="">Choisir un cours</option>
             {courses.map((course) => (
@@ -167,80 +231,118 @@ export default function AdminEnrollmentsPage() {
           <select
             value={form.status}
             onChange={(e) => updateField("status", e.target.value)}
-            className="rounded-2xl border border-slate-200 px-4 py-3 outline-none focus:border-green-500"
+            className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium outline-none focus:border-green-500"
           >
             <option value="active">Actif</option>
             <option value="inactive">Inactif</option>
             <option value="completed">Terminé</option>
             <option value="cancelled">Annulé</option>
           </select>
-
-          <button className="btn-primary inline-flex items-center justify-center gap-2">
-            <PlusCircle size={18} />
-            Inscrire
-          </button>
         </div>
       </form>
 
-      <div className="card overflow-hidden">
-        <table className="w-full">
-          <thead className="bg-slate-50">
-            <tr>
-              <th className="p-4 text-left">Apprenant</th>
-              <th className="p-4 text-left">Cours</th>
-              <th className="p-4 text-left">Statut</th>
-              <th className="p-4 text-left">Date inscription</th>
-              <th className="p-4 text-left">Actions</th>
-            </tr>
-          </thead>
+      <div className="rounded-[24px] border border-slate-100 bg-white p-5 shadow-md shadow-slate-200/60">
+        <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <h2 className="text-xl font-black text-slate-950">
+              Liste des inscriptions
+            </h2>
+            <p className="mt-1 text-sm font-medium text-slate-500">
+              {filteredEnrollments.length} inscription(s) affichée(s)
+            </p>
+          </div>
 
-          <tbody>
-            {enrollments.length === 0 && (
+          <div className="flex h-12 w-full items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 lg:w-80">
+            <Search size={20} className="text-slate-400" />
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Rechercher..."
+              className="w-full bg-transparent text-sm font-medium outline-none placeholder:text-slate-400"
+            />
+          </div>
+        </div>
+
+        <div className="overflow-hidden rounded-[24px] border border-slate-100">
+          <table className="w-full">
+            <thead className="bg-slate-50">
               <tr>
-                <td colSpan={5} className="p-6 text-center text-slate-500">
-                  Aucune inscription disponible.
-                </td>
+                <th className="p-4 text-left text-xs font-black uppercase tracking-wide text-slate-500">
+                  Apprenant
+                </th>
+                <th className="p-4 text-left text-xs font-black uppercase tracking-wide text-slate-500">
+                  Cours
+                </th>
+                <th className="p-4 text-left text-xs font-black uppercase tracking-wide text-slate-500">
+                  Statut
+                </th>
+                <th className="p-4 text-left text-xs font-black uppercase tracking-wide text-slate-500">
+                  Date inscription
+                </th>
+                <th className="p-4 text-left text-xs font-black uppercase tracking-wide text-slate-500">
+                  Actions
+                </th>
               </tr>
-            )}
+            </thead>
 
-            {enrollments.map((enrollment) => (
-              <tr key={enrollment.id} className="border-t">
-                <td className="p-4 font-bold text-slate-900">
-                  {enrollment.user?.name || "-"}
-                  <p className="text-sm font-normal text-slate-500">
-                    {enrollment.user?.email}
-                  </p>
-                </td>
+            <tbody className="divide-y divide-slate-100 bg-white">
+              {filteredEnrollments.length === 0 && (
+                <tr>
+                  <td colSpan={5} className="p-10 text-center text-slate-500">
+                    Aucune inscription disponible.
+                  </td>
+                </tr>
+              )}
 
-                <td className="p-4 text-slate-700">
-                  {enrollment.course?.title || "-"}
-                </td>
+              {filteredEnrollments.map((enrollment) => (
+                <tr key={enrollment.id} className="transition hover:bg-slate-50/80">
+                  <td className="p-4">
+                    <div className="flex items-center gap-4">
+                      <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-green-100 text-green-700">
+                        <GraduationCap size={20} />
+                      </div>
 
-                <td className="p-4">
-                  <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-bold text-green-700">
-                    {enrollment.status}
-                  </span>
-                </td>
+                      <div>
+                        <p className="text-sm font-black text-slate-900">
+                          {enrollment.user?.name || "-"}
+                        </p>
+                        <p className="mt-1 text-xs text-slate-500">
+                          {enrollment.user?.email || "-"}
+                        </p>
+                      </div>
+                    </div>
+                  </td>
 
-                <td className="p-4 text-slate-600">
-                  {enrollment.enrolled_at
-                    ? new Date(enrollment.enrolled_at).toLocaleDateString("fr-FR")
-                    : "-"}
-                </td>
+                  <td className="p-4 text-sm font-bold text-slate-700">
+                    {enrollment.course?.title || "-"}
+                  </td>
 
-                <td className="p-4">
-                  <button
-                    onClick={() => askDeleteEnrollment(enrollment)}
-                    className="inline-flex items-center gap-2 rounded-2xl bg-red-100 px-4 py-2 text-sm font-bold text-red-700 hover:bg-red-200"
-                  >
-                    <Trash2 size={16} />
-                    Désinscrire
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                  <td className="p-4">
+                    <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-black text-green-700">
+                      {enrollment.status}
+                    </span>
+                  </td>
+
+                  <td className="p-4 text-sm font-bold text-slate-600">
+                    {enrollment.enrolled_at
+                      ? new Date(enrollment.enrolled_at).toLocaleDateString("fr-FR")
+                      : "-"}
+                  </td>
+
+                  <td className="p-4">
+                    <button
+                      onClick={() => askDeleteEnrollment(enrollment)}
+                      className="inline-flex items-center gap-2 rounded-xl bg-red-100 px-3 py-2 text-xs font-black text-red-700 transition hover:bg-red-200"
+                    >
+                      <Trash2 size={15} />
+                      Désinscrire
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <ConfirmModal
@@ -256,5 +358,36 @@ export default function AdminEnrollmentsPage() {
         }}
       />
     </AdminLayout>
+  );
+}
+
+function StatBox({
+  icon,
+  label,
+  value,
+  color,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string | number;
+  color: "green" | "orange" | "slate";
+}) {
+  const styles = {
+    green: "bg-green-100 text-green-700",
+    orange: "bg-orange-100 text-orange-700",
+    slate: "bg-slate-100 text-slate-700",
+  };
+
+  return (
+    <div className="rounded-[22px] border border-slate-100 bg-white p-5 shadow-md shadow-slate-200/60 transition hover:-translate-y-1 hover:shadow-lg">
+      <div
+        className={`flex h-11 w-11 items-center justify-center rounded-2xl ${styles[color]}`}
+      >
+        {icon}
+      </div>
+
+      <p className="mt-4 text-3xl font-black text-slate-950">{value}</p>
+      <p className="mt-1 text-sm font-black text-slate-500">{label}</p>
+    </div>
   );
 }

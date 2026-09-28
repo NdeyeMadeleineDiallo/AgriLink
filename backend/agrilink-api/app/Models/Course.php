@@ -35,4 +35,16 @@ class Course extends Model
 {
     return $this->hasMany(Certificate::class);
 }
+
+public function enrollments()
+{
+    return $this->hasMany(CourseEnrollment::class);
+}
+
+public function enrolledUsers()
+{
+    return $this->belongsToMany(User::class, 'course_enrollments')
+        ->withPivot(['status', 'enrolled_at'])
+        ->withTimestamps();
+}
 }

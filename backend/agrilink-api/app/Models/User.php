@@ -100,4 +100,16 @@ public function certificates()
 {
     return $this->hasMany(Certificate::class);
 }
+
+public function courseEnrollments()
+{
+    return $this->hasMany(CourseEnrollment::class);
+}
+
+public function enrolledCourses()
+{
+    return $this->belongsToMany(Course::class, 'course_enrollments')
+        ->withPivot(['status', 'enrolled_at'])
+        ->withTimestamps();
+}
 }
