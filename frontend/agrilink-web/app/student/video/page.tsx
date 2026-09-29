@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -278,7 +278,7 @@ function StudentVideoContent() {
               <div className="mt-5 space-y-3">
                 {lesson.pdf_file ? (
                   <a
-                    href={`http://127.0.0.1:8000/storage/${lesson.pdf_file}`}
+                    href={`${API_BASE_URL}/storage/${lesson.pdf_file}`}
                     target="_blank"
                     className="flex items-center gap-3 rounded-2xl bg-orange-50 p-4 font-black text-orange-700 hover:bg-orange-100"
                   >

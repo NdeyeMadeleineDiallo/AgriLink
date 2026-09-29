@@ -20,7 +20,9 @@ import Link from "next/link";
 import { getStoredUser } from "@/src/lib/auth";
 import { apiRequest } from "@/src/services/api";
 
-const API_BASE_URL = "http://127.0.0.1:8000";
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL?.replace(/\/api\/?$/, "") ||
+  "http://127.0.0.1:8000";
 
 type ExpertFilter =
   | "all"
@@ -212,7 +214,7 @@ export default function ExpertMarketplacePage() {
           className="relative min-h-[330px] overflow-hidden rounded-[30px] bg-cover bg-center shadow-xl shadow-slate-300/40"
           style={{
             backgroundImage:
-              "url('/images/agriexpert-banner.PNG')",
+              "url('/images/agriexpert-banner.png')",
           }}
         >
           <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-green-950/75 to-black/35" />
@@ -820,7 +822,7 @@ function getExpertPhotoUrl(expert: any): string | null {
     .replace(/^\/+/, "")
     .replace(/^storage\//, "");
 
-  return `http://127.0.0.1:8000/storage/${cleanPath}`;
+  return `${API_BASE_URL}/storage/${cleanPath}`;
 }
 
 function getExpertSpecialities(

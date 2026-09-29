@@ -17,7 +17,9 @@ import Link from "next/link";
 import { getStoredUser, logout } from "@/src/lib/auth";
 import { apiRequest } from "@/src/services/api";
 
-const API_BASE_URL = "http://127.0.0.1:8000";
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL?.replace(/\/api\/?$/, "") ||
+  "http://127.0.0.1:8000";
 
 type MarketFilter =
   | "all"
