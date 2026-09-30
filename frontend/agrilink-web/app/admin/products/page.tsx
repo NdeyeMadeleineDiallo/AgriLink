@@ -16,6 +16,10 @@ import AdminLayout from "@/src/components/layout/AdminLayout";
 import { getStoredUser } from "@/src/lib/auth";
 import { apiRequest } from "@/src/services/api";
 
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL?.replace(/\/api\/?$/, "") ||
+  "http://127.0.0.1:8000";
+
 export default function ProductsPage() {
   const [user, setUser] = useState<any>(null);
   const [products, setProducts] = useState<any[]>([]);
@@ -503,7 +507,7 @@ function ProductImage({
     imagePath.startsWith("http://") ||
     imagePath.startsWith("https://")
       ? imagePath
-      : `http://127.0.0.1:8000/storage/${imagePath}`;
+      : `${API_BASE_URL}/storage/${imagePath}`;
 
   return (
     <img

@@ -16,6 +16,10 @@ import AdminLayout from "@/src/components/layout/AdminLayout";
 import { getStoredUser } from "@/src/lib/auth";
 import { apiRequest } from "@/src/services/api";
 
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL?.replace(/\/api\/?$/, "") ||
+  "http://127.0.0.1:8000";
+
 export default function ExpertsPage() {
   const [user, setUser] = useState<any>(null);
   const [experts, setExperts] = useState<any[]>([]);
@@ -259,7 +263,7 @@ function ExpertPhoto({ expert }: { expert: any }) {
   if (expert.photo) {
     return (
       <img
-        src={`http://127.0.0.1:8000/storage/${expert.photo}`}
+        src={`${API_BASE_URL}/storage/${expert.photo}`}
         alt={expert.user?.name || "Expert"}
         className="h-12 w-12 rounded-2xl border border-slate-200 object-cover"
       />
