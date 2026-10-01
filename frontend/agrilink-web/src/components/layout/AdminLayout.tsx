@@ -14,13 +14,11 @@ export default function AdminLayout({
     <main className="min-h-screen w-full overflow-x-hidden bg-[#F8FAFC]">
       <AdminSidebar />
 
-      <section className="min-h-screen min-w-0 w-full lg:pl-72">
+      <section className="min-h-screen min-w-0 w-full lg:pl-60 xl:pl-64">
         <AdminTopbar user={user} />
 
-        <div className="w-full min-w-0 px-4 py-6 sm:px-6 lg:px-8 lg:py-7">
-          <div className="w-full min-w-0">
-            {children}
-          </div>
+        <div className="w-full min-w-0 px-4 py-4 sm:px-5 lg:px-6">
+          {children}
         </div>
       </section>
     </main>

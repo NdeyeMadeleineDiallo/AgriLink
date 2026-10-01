@@ -5,32 +5,41 @@ import { Bell, LogOut, Search } from "lucide-react";
 
 export default function AdminTopbar({ user }: { user: any }) {
   return (
-    <header className="flex h-20 items-center justify-between border-b border-slate-200 bg-white px-6">
-      <div>
-        <h2 className="text-xl font-black text-slate-950">Tableau de bord</h2>
-        <p className="text-sm text-slate-500">Vue globale de la plateforme AgriLink</p>
+    <header className="flex h-16 items-center justify-between border-b border-slate-200 bg-white px-5 lg:px-6">
+      <div className="min-w-0">
+        <h2 className="text-lg font-black text-slate-950">
+          Tableau de bord
+        </h2>
+        <p className="text-xs text-slate-500">
+          Vue globale de la plateforme AgriLink
+        </p>
       </div>
 
-      <div className="hidden items-center gap-3 md:flex">
-        <div className="flex items-center gap-2 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
-          <Search size={18} className="text-slate-400" />
+      <div className="hidden items-center gap-2 md:flex">
+        <div className="flex h-10 w-56 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3">
+          <Search size={17} className="shrink-0 text-slate-400" />
           <input
             placeholder="Rechercher..."
-            className="bg-transparent text-sm outline-none"
+            className="min-w-0 w-full bg-transparent text-sm outline-none"
           />
         </div>
 
-        <button className="rounded-2xl border border-slate-200 bg-white p-3 text-slate-500">
-          <Bell size={18} />
+        <button className="rounded-xl border border-slate-200 bg-white p-2.5 text-slate-500">
+          <Bell size={17} />
         </button>
 
-        <div className="rounded-2xl bg-green-50 px-4 py-2">
-          <p className="text-sm font-bold text-slate-800">{user?.name}</p>
-          <p className="text-xs text-green-700">Super Admin</p>
+        <div className="rounded-xl bg-green-50 px-3 py-1.5">
+          <p className="max-w-44 truncate text-xs font-bold text-slate-800">
+            {user?.name}
+          </p>
+          <p className="text-[11px] text-green-700">Super Admin</p>
         </div>
 
-        <button onClick={logout} className="rounded-2xl bg-slate-900 p-3 text-white">
-          <LogOut size={18} />
+        <button
+          onClick={logout}
+          className="rounded-xl bg-slate-900 p-2.5 text-white"
+        >
+          <LogOut size={17} />
         </button>
       </div>
     </header>
