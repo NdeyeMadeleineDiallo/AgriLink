@@ -156,26 +156,26 @@ export default function AdminUsersPage() {
           </div>
         </div>
 
-        <div className="overflow-hidden rounded-[24px] border border-slate-100">
-          <table className="w-full">
+        <div className="w-full overflow-hidden rounded-[24px] border border-slate-100">
+          <table className="w-full table-fixed">
             <thead className="bg-slate-50">
               <tr>
-                <th className="p-4 text-left text-xs font-black uppercase tracking-wide text-slate-500">
+                <th className="px-3 py-3 text-left text-xs font-black uppercase tracking-wide text-slate-500">
                   Utilisateur
                 </th>
-                <th className="p-4 text-left text-xs font-black uppercase tracking-wide text-slate-500">
+                <th className="px-3 py-3 text-left text-xs font-black uppercase tracking-wide text-slate-500">
                   Téléphone
                 </th>
-                <th className="p-4 text-left text-xs font-black uppercase tracking-wide text-slate-500">
+                <th className="px-3 py-3 text-left text-xs font-black uppercase tracking-wide text-slate-500">
                   Rôle actuel
                 </th>
-                <th className="p-4 text-left text-xs font-black uppercase tracking-wide text-slate-500">
+                <th className="px-3 py-3 text-left text-xs font-black uppercase tracking-wide text-slate-500">
                   Changer rôle
                 </th>
-                <th className="p-4 text-left text-xs font-black uppercase tracking-wide text-slate-500">
+                <th className="px-3 py-3 text-left text-xs font-black uppercase tracking-wide text-slate-500">
                   Statut
                 </th>
-                <th className="p-4 text-left text-xs font-black uppercase tracking-wide text-slate-500">
+                <th className="px-3 py-3 text-left text-xs font-black uppercase tracking-wide text-slate-500">
                   Changer statut
                 </th>
               </tr>
@@ -196,7 +196,7 @@ export default function AdminUsersPage() {
 
                 return (
                   <tr key={item.id} className="transition hover:bg-slate-50/80">
-                    <td className="p-4">
+                    <td className="px-3 py-3">
                       <div className="flex items-center gap-4">
                         <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-green-100 text-lg font-black text-green-700">
                           {item.name?.charAt(0) || "U"}
@@ -213,22 +213,22 @@ export default function AdminUsersPage() {
                       </div>
                     </td>
 
-                    <td className="p-4 text-sm font-bold text-slate-700">
+                    <td className="px-3 py-3 text-sm font-bold text-slate-700">
                       <div className="flex items-center gap-2">
                         <Phone size={15} className="text-slate-500" />
                         {item.phone || "-"}
                       </div>
                     </td>
 
-                    <td className="p-4">
+                    <td className="px-3 py-3">
                       <RoleBadge role={currentRole} />
                     </td>
 
-                    <td className="p-4">
+                    <td className="px-3 py-3">
                       <select
                         value={currentRole}
                         onChange={(e) => updateRole(item.id, e.target.value)}
-                        className="h-11 rounded-2xl border border-slate-200 bg-slate-50 px-4 text-sm font-bold outline-none focus:border-green-500"
+                        className="h-10 w-full min-w-0 rounded-xl border border-slate-200 bg-slate-50 px-2 text-xs font-bold outline-none focus:border-green-500"
                       >
                         <option value="apprenant">Apprenant</option>
                         <option value="vendeur">Vendeur</option>
@@ -238,11 +238,11 @@ export default function AdminUsersPage() {
                       </select>
                     </td>
 
-                    <td className="p-4">
+                    <td className="px-3 py-3">
                       <StatusBadge status={currentStatus} />
                     </td>
 
-                    <td className="p-4">
+                    <td className="px-3 py-3">
                       <select
                         value={currentStatus}
                         onChange={(e) => updateStatus(item.id, e.target.value)}

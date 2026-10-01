@@ -68,7 +68,7 @@ export default function AdminPage() {
 
   return (
     <AdminLayout user={user}>
-      <div className="relative overflow-hidden rounded-[34px] border border-white/50 bg-white/60 p-8 shadow-xl backdrop-blur-2xl">
+      <div className="relative overflow-hidden rounded-[28px] border border-white/50 bg-white/60 p-5 md:p-6 xl:p-8 shadow-xl backdrop-blur-2xl">
         <div
           className="absolute inset-0 bg-cover bg-center opacity-100"
           style={{ backgroundImage: "url('/images/admin-banner.png')" }}
@@ -79,11 +79,11 @@ export default function AdminPage() {
     BIENVENUE SUR AGRILINK
   </p>
 
-  <h1 className="mt-4 text-4xl font-black leading-tight text-white drop-shadow-2xl">
+  <h1 className="mt-3 text-2xl font-black leading-tight text-white drop-shadow-2xl xl:mt-4 xl:text-4xl">
     Pilotez votre écosystème agricole digital.
   </h1>
 
-  <p className="mt-5 max-w-2xl text-lg font-medium leading-8 text-white/95 drop-shadow-lg">
+  <p className="mt-3 max-w-2xl text-sm font-medium leading-6 text-white/95 drop-shadow-lg xl:mt-5 xl:text-lg xl:leading-8">
     Suivez les utilisateurs, les cours, les cohortes, les annonces,
     les experts et les paiements depuis un espace centralisé.
   </p>
@@ -95,17 +95,17 @@ export default function AdminPage() {
           Chargement des statistiques...
         </div>
       ) : (
-        <div className="mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-5">
+        <div className="mt-5 grid grid-cols-2 gap-4 xl:mt-8 xl:grid-cols-5 xl:gap-5">
           {cards.map((card) => (
             <div
               key={card.label}
-              className="rounded-[28px] border border-white/60 bg-white/70 p-6 shadow-lg backdrop-blur-2xl transition hover:-translate-y-1 hover:shadow-xl"
+              className="rounded-[22px] border border-white/60 bg-white/70 p-4 shadow-lg backdrop-blur-2xl transition hover:-translate-y-1 hover:shadow-xl xl:rounded-[28px] xl:p-6"
             >
-              <div className={`flex h-14 w-14 items-center justify-center rounded-2xl ${card.color}`}>
+              <div className={`flex h-11 w-11 items-center justify-center rounded-xl xl:h-14 xl:w-14 xl:rounded-2xl ${card.color}`}>
                 {card.icon}
               </div>
 
-              <p className="mt-6 text-4xl font-black text-slate-950">
+              <p className="mt-4 text-2xl font-black text-slate-950 xl:mt-6 xl:text-4xl">
                 {card.value}
               </p>
 
@@ -117,8 +117,8 @@ export default function AdminPage() {
         </div>
       )}
 
-      <div className="mt-8 grid gap-6 lg:grid-cols-3">
-        <div className="rounded-[28px] border border-white/60 bg-white/70 p-6 shadow-lg backdrop-blur-2xl lg:col-span-2">
+      <div className="mt-5 grid gap-4 xl:mt-8 xl:grid-cols-3 xl:gap-6">
+        <div className="rounded-[22px] border border-white/60 bg-white/70 p-4 shadow-lg backdrop-blur-2xl transition hover:-translate-y-1 hover:shadow-xl xl:rounded-[28px] p-4 xl:p-6">
           <h3 className="text-xl font-black text-slate-950">
             Activité récente
           </h3>
@@ -140,7 +140,7 @@ export default function AdminPage() {
           </div>
         </div>
 
-        <div className="rounded-[28px] border border-white/60 bg-white/70 p-6 shadow-lg backdrop-blur-2xl">
+        <div className="rounded-[22px] border border-white/60 bg-white/70 p-4 shadow-lg backdrop-blur-2xl transition hover:-translate-y-1 hover:shadow-xl xl:rounded-[28px] p-4 xl:p-6">
           <h3 className="text-xl font-black text-slate-950">
             Actions rapides
           </h3>
