@@ -68,7 +68,7 @@ export default function AdminPage() {
 
   return (
     <AdminLayout user={user}>
-      <div className="relative overflow-hidden rounded-[28px] border border-white/50 bg-white/60 p-5 md:p-6 xl:p-8 shadow-xl backdrop-blur-2xl">
+      <div className="relative overflow-hidden rounded-[24px] border border-white/50 bg-white/60 p-5 md:p-6 xl:p-7 shadow-xl backdrop-blur-2xl">
         <div
           className="absolute inset-0 bg-cover bg-center opacity-100"
           style={{ backgroundImage: "url('/images/admin-banner.png')" }}
@@ -97,23 +97,27 @@ export default function AdminPage() {
       ) : (
         <div className="mt-5 grid grid-cols-2 gap-4 xl:mt-8 xl:grid-cols-5 xl:gap-5">
           {cards.map((card) => (
-            <div
-              key={card.label}
-              className="rounded-[22px] border border-white/60 bg-white/70 p-4 shadow-lg backdrop-blur-2xl transition hover:-translate-y-1 hover:shadow-xl xl:rounded-[28px] xl:p-6"
-            >
-              <div className={`flex h-11 w-11 items-center justify-center rounded-xl xl:h-14 xl:w-14 xl:rounded-2xl ${card.color}`}>
-                {card.icon}
-              </div>
+  <div
+    key={card.label}
+    className="flex min-h-[105px] items-center gap-4 rounded-[20px] border border-slate-100 bg-white p-4 shadow-md shadow-slate-200/60 transition hover:-translate-y-0.5 hover:shadow-lg"
+  >
+    <div
+      className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl ${card.color}`}
+    >
+      {card.icon}
+    </div>
 
-              <p className="mt-4 text-2xl font-black text-slate-950 xl:mt-6 xl:text-4xl">
-                {card.value}
-              </p>
+    <div className="min-w-0">
+      <p className="text-2xl font-bold leading-none text-slate-950">
+        {card.value}
+      </p>
 
-              <p className="mt-1 text-sm font-bold text-slate-500">
-                {card.label}
-              </p>
-            </div>
-          ))}
+      <p className="mt-2 text-sm font-medium text-slate-500">
+        {card.label}
+      </p>
+    </div>
+  </div>
+))}
         </div>
       )}
 

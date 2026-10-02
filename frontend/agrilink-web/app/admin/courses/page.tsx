@@ -119,7 +119,7 @@ export default function CoursesPage() {
               AgriAcademy
             </p>
 
-            <h1 className="mt-1 text-3xl font-black text-slate-950">
+            <h1 className="mt-1 text-2xl font-bold text-slate-900">
               Gestion des cours
             </h1>
 
@@ -138,7 +138,7 @@ export default function CoursesPage() {
           </Link>
         </div>
 
-        <div className="mb-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="mb-6 grid gap-4 md:grid-cols-3">
           <StatBox
             icon={<BookOpen size={20} />}
             label="Total cours"
@@ -164,7 +164,7 @@ export default function CoursesPage() {
         <div className="min-w-0 rounded-[24px] border border-slate-100 bg-white p-4 shadow-md shadow-slate-200/60 md:p-5">
           <div className="mb-5 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div>
-              <h2 className="text-lg font-black text-slate-950">
+              <h2 className="text-lg font-bold text-slate-900">
                 Liste des formations
               </h2>
 
@@ -379,22 +379,23 @@ function StatBox({
   };
 
   return (
-    <div className="rounded-[20px] border border-slate-100 bg-white p-4 shadow-sm shadow-slate-200/60 transition hover:-translate-y-0.5 hover:shadow-md">
-      <div
-        className={`flex h-10 w-10 items-center justify-center rounded-xl ${styles[color]}`}
-      >
-        {icon}
-      </div>
+  <div className="flex min-h-[105px] items-center gap-4 rounded-[20px] border border-slate-100 bg-white p-4 shadow-md shadow-slate-200/60 transition hover:-translate-y-0.5 hover:shadow-lg">
+    <div
+      className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl ${styles[color]}`}
+    >
+      {icon}
+    </div>
 
-      <p className="mt-3 text-2xl font-black text-slate-950">
+    <div className="min-w-0">
+      <p className="text-2xl font-bold leading-none text-slate-950">
         {value}
       </p>
-
-      <p className="mt-0.5 text-xs font-semibold text-slate-500">
+      <p className="mt-2 text-sm font-medium text-slate-500">
         {label}
       </p>
     </div>
-  );
+  </div>
+);
 }
 
 function getCourseThumbnailUrl(path: string): string {
@@ -432,3 +433,4 @@ function formatDuration(
 
   return `${hours} h ${minutes} min`;
 }
+

@@ -145,7 +145,7 @@ export default function AdminLessonsPage() {
               AgriAcademy
             </p>
 
-            <h1 className="mt-1 text-3xl font-black text-slate-950">
+            <h1 className="mt-1 text-2xl font-bold text-slate-900">
               Gestion des leçons
             </h1>
 
@@ -156,7 +156,7 @@ export default function AdminLessonsPage() {
 
           <Link
             href="/admin/lessons/create"
-            className="inline-flex items-center justify-center gap-2 self-start rounded-xl bg-green-600 px-6 py-3.5 text-[15px] font-bold text-white shadow-md shadow-green-200 transition hover:bg-green-700 lg:self-auto"
+            className="inline-flex items-center justify-center gap-2 self-start rounded-xl bg-green-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md shadow-green-200 transition hover:bg-green-700 lg:self-auto"
           >
             <PlusCircle size={20} />
             Créer une leçon
@@ -193,7 +193,7 @@ export default function AdminLessonsPage() {
           {/* EN-TÊTE LISTE */}
           <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div>
-              <h2 className="text-xl font-black text-slate-950">
+              <h2 className="text-lg font-bold text-slate-900">
                 Liste des leçons
               </h2>
 
@@ -482,3 +482,4 @@ function StatBox({
     </div>
   );
 }
+

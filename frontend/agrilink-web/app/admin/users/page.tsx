@@ -93,11 +93,11 @@ export default function AdminUsersPage() {
     <AdminLayout user={user}>
       <div className="mb-7 flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <p className="text-sm font-black uppercase tracking-wide text-green-700">
+          <p className="text-xs font-bold uppercase tracking-wider text-green-700">
             Utilisateurs
           </p>
 
-          <h1 className="mt-2 text-3xl font-black text-slate-950">
+          <h1 className="mt-2 text-2xl font-bold text-slate-900">
             Gestion des utilisateurs
           </h1>
 
@@ -107,7 +107,7 @@ export default function AdminUsersPage() {
         </div>
       </div>
 
-      <div className="mb-7 grid gap-5 md:grid-cols-3">
+      <div className="mb-6 grid gap-4 md:grid-cols-3">
         <StatBox
           icon={<Users size={22} />}
           label="Total utilisateurs"
@@ -137,7 +137,7 @@ export default function AdminUsersPage() {
       <div className="rounded-[24px] border border-slate-100 bg-white p-5 shadow-md shadow-slate-200/60">
         <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <h2 className="text-xl font-black text-slate-950">
+            <h2 className="text-lg font-bold text-slate-900">
               Liste des utilisateurs
             </h2>
             <p className="mt-1 text-sm font-medium text-slate-500">
@@ -323,16 +323,22 @@ function StatBox({
     slate: "bg-slate-100 text-slate-700",
   };
 
-  return (
-    <div className="rounded-[22px] border border-slate-100 bg-white p-5 shadow-md shadow-slate-200/60 transition hover:-translate-y-1 hover:shadow-lg">
-      <div
-        className={`flex h-11 w-11 items-center justify-center rounded-2xl ${styles[color]}`}
-      >
-        {icon}
-      </div>
-
-      <p className="mt-4 text-3xl font-black text-slate-950">{value}</p>
-      <p className="mt-1 text-sm font-black text-slate-500">{label}</p>
+ return (
+  <div className="flex min-h-[105px] items-center gap-4 rounded-[20px] border border-slate-100 bg-white p-4 shadow-md shadow-slate-200/60 transition hover:-translate-y-0.5 hover:shadow-lg">
+    <div
+      className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl ${styles[color]}`}
+    >
+      {icon}
     </div>
-  );
+
+    <div className="min-w-0">
+      <p className="text-2xl font-bold leading-none text-slate-950">
+        {value}
+      </p>
+      <p className="mt-2 text-sm font-medium text-slate-500">
+        {label}
+      </p>
+    </div>
+  </div>
+);
 }
