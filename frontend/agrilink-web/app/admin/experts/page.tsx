@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import {
@@ -217,38 +217,34 @@ export default function ExpertsPage() {
                   </td>
 
                   <td className="p-4">
-                    <div className="flex min-w-[310px] items-center gap-2">
-                      <button
-                        onClick={() =>
-                          updateExpertStatus(expert.id, "approved")
-                        }
-                        className="inline-flex items-center gap-2 rounded-xl bg-green-100 px-3 py-2 text-xs font-black text-green-700 transition hover:bg-green-200"
-                      >
-                        <CheckCircle size={15} />
-                        Approuver
-                      </button>
+  <div className="flex items-center gap-2">
 
-                      <button
-                        onClick={() =>
-                          updateExpertStatus(expert.id, "rejected")
-                        }
-                        className="inline-flex items-center gap-2 rounded-xl bg-red-100 px-3 py-2 text-xs font-black text-red-700 transition hover:bg-red-200"
-                      >
-                        <XCircle size={15} />
-                        Rejeter
-                      </button>
+    <button
+      onClick={() => updateExpertStatus(expert.id, "approved")}
+      className="h-9 px-2 rounded-xl bg-green-100 text-green-700 font-semibold text-xs"
+      title="Approuver"
+    >
+      ✓
+    </button>
 
-                      <button
-                        onClick={() =>
-                          updateExpertStatus(expert.id, "suspended")
-                        }
-                        className="inline-flex items-center gap-2 rounded-xl bg-slate-100 px-3 py-2 text-xs font-black text-slate-700 transition hover:bg-slate-200"
-                      >
-                        <UserX size={15} />
-                        Suspendre
-                      </button>
-                    </div>
-                  </td>
+    <button
+      onClick={() => updateExpertStatus(expert.id, "rejected")}
+      className="h-9 px-2 rounded-xl bg-red-100 text-red-700 font-semibold text-xs"
+      title="Rejeter"
+    >
+      ✕
+    </button>
+
+    <button
+      onClick={() => updateExpertStatus(expert.id, "suspended")}
+      className="h-9 px-2 rounded-xl bg-slate-100 text-slate-700 font-semibold text-xs"
+      title="Suspendre"
+    >
+      ⛔
+    </button>
+
+  </div>
+</td>
                 </tr>
               ))}
             </tbody>
