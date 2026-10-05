@@ -86,7 +86,7 @@ export default function LoginPage() {
 
       <div className="relative mx-auto grid min-h-[calc(100vh-48px)] max-w-[1180px] overflow-hidden rounded-[34px] border border-white/80 bg-white/60 shadow-[0_30px_90px_rgba(15,23,42,0.10)] backdrop-blur-2xl lg:grid-cols-[0.95fr_1.05fr]">
         {/* LEFT PANEL */}
-        <section className="relative hidden overflow-hidden bg-gradient-to-br from-emerald-800 via-emerald-700 to-green-600 p-10 text-white lg:flex lg:flex-col lg:justify-between">
+        <section className="relative hidden overflow-hidden bg-gradient-to-br from-emerald-800 via-emerald-700 to-green-600 p-7 text-white lg:flex lg:flex-col lg:justify-between">
           <div className="pointer-events-none absolute -left-24 top-12 h-72 w-72 rounded-full bg-lime-300/20 blur-[90px]" />
           <div className="pointer-events-none absolute -right-20 bottom-10 h-72 w-72 rounded-full bg-orange-300/20 blur-[90px]" />
 
@@ -102,7 +102,7 @@ export default function LoginPage() {
               />
             </Link>
 
-            <div className="mt-10 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 backdrop-blur">
+            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 backdrop-blur">
               <Sparkles
                 size={14}
                 className="text-lime-200"
@@ -113,7 +113,7 @@ export default function LoginPage() {
               </span>
             </div>
 
-            <h2 className="mt-5 max-w-[430px] text-[38px] font-black leading-[1.08] tracking-[-0.035em]">
+            <h2 className="mt-5 max-w-[430px] text-[30px] font-black leading-[1.08] tracking-[-0.035em]">
               Retrouvez tout votre parcours agricole en un seul endroit.
             </h2>
 
@@ -142,7 +142,7 @@ export default function LoginPage() {
         </section>
 
         {/* RIGHT / FORM */}
-        <section className="flex items-center justify-center p-5 sm:p-8 md:p-10">
+        <section className="flex items-center justify-center p-4 sm:p-6 md:p-7">
           <div className="w-full max-w-[440px]">
             {/* LOGO MOBILE */}
             <div className="mb-7 flex justify-center lg:hidden">
@@ -160,7 +160,7 @@ export default function LoginPage() {
                 Heureux de vous revoir
               </p>
 
-              <h1 className="mt-2 text-[32px] font-black tracking-[-0.03em] text-slate-950 md:text-[36px]">
+              <h1 className="mt-2 text-[32px] font-black tracking-[-0.03em] text-slate-950 md:text-[32px]">
                 Connectez-vous
               </h1>
 
@@ -332,8 +332,8 @@ function Feature({
   text: string;
 }) {
   return (
-    <div className="flex items-center gap-3 rounded-[18px] border border-white/15 bg-white/10 p-3.5 backdrop-blur-xl">
-      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/15 text-lime-100">
+    <div className="flex items-center gap-3 rounded-[18px] border border-white/15 bg-white/10 p-3 backdrop-blur-xl">
+      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white/15 text-lime-100">
         {icon}
       </div>
 

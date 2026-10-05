@@ -145,7 +145,7 @@ export default function RegisterPage() {
 
           {/* CONTENT */}
           <div className="relative z-10 mt-2">
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3.5 py-1.5 backdrop-blur-xl">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-1 backdrop-blur-xl">
               <Sparkles
                 size={14}
                 className="text-lime-300"
@@ -164,7 +164,7 @@ export default function RegisterPage() {
               </span>
             </h1>
 
-            <p className="mt-3 max-w-[400px] text-[13px] leading-6 text-white/75">
+            <p className="mt-3 max-w-[400px] text-[9px] leading-3 text-white/75">
               Formation, marché agricole et expertise
               réunis dans une seule plateforme pensée
               pour simplifier votre parcours.
@@ -589,17 +589,17 @@ function FeatureCard({
   description: string;
 }) {
   return (
-    <div className="flex items-center gap-3 rounded-[16px] border border-white/25 bg-white/10 p-3 backdrop-blur-xl transition hover:bg-white/15">
-      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] bg-gradient-to-br from-white/20 to-lime-300/20 text-lime-200">
+    <div className="flex items-center gap-2.5 rounded-[14px] border border-white/25 bg-white/10 p-2.5 backdrop-blur-xl transition hover:bg-white/15">
+      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] bg-gradient-to-br from-white/20 to-lime-300/20 text-lime-200">
         {icon}
       </div>
 
       <div>
-        <p className="text-[13px] font-black text-white">
+        <p className="text-[12px] font-bold text-white">
           {title}
         </p>
 
-        <p className="mt-0.5 text-[10px] text-white/70">
+        <p className="text-[9px] text-white/70">
           {description}
         </p>
       </div>
