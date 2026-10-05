@@ -79,14 +79,14 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-gradient-to-br from-[#F5FBF6] via-white to-[#FFF7EF] px-4 py-6 md:px-6">
+    <main className="relative h-screen overflow-hidden bg-gradient-to-br from-[#F5FBF6] via-white to-[#FFF7EF] px-3 py-3 md:px-4">
       {/* GLOWS */}
       <div className="pointer-events-none absolute -left-24 top-20 h-80 w-80 rounded-full bg-emerald-200/35 blur-[110px]" />
       <div className="pointer-events-none absolute -right-20 bottom-10 h-80 w-80 rounded-full bg-orange-200/35 blur-[110px]" />
 
-      <div className="relative mx-auto grid min-h-[calc(100vh-48px)] max-w-[1180px] overflow-hidden rounded-[34px] border border-white/80 bg-white/60 shadow-[0_30px_90px_rgba(15,23,42,0.10)] backdrop-blur-2xl lg:grid-cols-[0.95fr_1.05fr]">
+      <div className="relative mx-auto grid h-full max-w-[1180px] overflow-hidden rounded-[34px] border border-white/80 bg-white/60 shadow-[0_30px_90px_rgba(15,23,42,0.10)] backdrop-blur-2xl lg:grid-cols-[0.95fr_1.05fr]">
         {/* LEFT PANEL */}
-        <section className="relative hidden overflow-hidden bg-gradient-to-br from-emerald-800 via-emerald-700 to-green-600 p-7 text-white lg:flex lg:flex-col lg:justify-between">
+        <section className="relative hidden overflow-hidden bg-gradient-to-br from-emerald-800 via-emerald-700 to-green-600 p-5 text-white lg:flex lg:flex-col lg:justify-between">
           <div className="pointer-events-none absolute -left-24 top-12 h-72 w-72 rounded-full bg-lime-300/20 blur-[90px]" />
           <div className="pointer-events-none absolute -right-20 bottom-10 h-72 w-72 rounded-full bg-orange-300/20 blur-[90px]" />
 
@@ -98,7 +98,7 @@ export default function LoginPage() {
               <img
                 src="/images/agrilink-logo.png"
                 alt="AgriLink"
-                className="h-[72px] w-auto object-contain brightness-0 invert"
+                className="h-[60px] w-auto object-contain brightness-0 invert"
               />
             </Link>
 
@@ -113,7 +113,7 @@ export default function LoginPage() {
               </span>
             </div>
 
-            <h2 className="mt-5 max-w-[430px] text-[30px] font-black leading-[1.08] tracking-[-0.035em]">
+            <h2 className="mt-5 max-w-[430px] text-[24px] font-black leading-[1.08] tracking-[-0.035em]">
               Retrouvez tout votre parcours agricole en un seul endroit.
             </h2>
 
@@ -160,7 +160,7 @@ export default function LoginPage() {
                 Heureux de vous revoir
               </p>
 
-              <h1 className="mt-2 text-[32px] font-black tracking-[-0.03em] text-slate-950 md:text-[32px]">
+              <h1 className="mt-2 text-[30px] font-black tracking-[-0.03em] text-slate-950 md:text-[32px]">
                 Connectez-vous
               </h1>
 
@@ -178,7 +178,7 @@ export default function LoginPage() {
 
             <form
               onSubmit={handleLogin}
-              className="mt-7 space-y-5"
+              className="mt-5 space-y-4"
             >
               {/* EMAIL */}
               <div>
@@ -294,7 +294,7 @@ export default function LoginPage() {
             </form>
 
             {/* REGISTER */}
-            <div className="mt-7 rounded-[18px] border border-white/80 bg-white/60 px-4 py-4 text-center shadow-sm backdrop-blur-xl">
+            <div className="mt-4 rounded-[18px] border border-white/80 bg-white/60 px-4 py-4 text-center shadow-sm backdrop-blur-xl">
               <p className="text-sm text-slate-500">
                 Vous n’avez pas encore de compte ?{" "}
                 <Link
@@ -307,7 +307,7 @@ export default function LoginPage() {
             </div>
 
             {/* HOME */}
-            <div className="mt-5 text-center">
+            <div className="mt-3 text-center">
               <Link
                 href="/"
                 className="text-xs font-semibold text-slate-400 transition hover:text-emerald-700"
@@ -332,7 +332,7 @@ function Feature({
   text: string;
 }) {
   return (
-    <div className="flex items-center gap-3 rounded-[18px] border border-white/15 bg-white/10 p-3 backdrop-blur-xl">
+    <div className="flex items-center gap-3 rounded-[18px] border border-white/15 bg-white/10 p-2.5 backdrop-blur-xl">
       <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white/15 text-lime-100">
         {icon}
       </div>
